@@ -4,6 +4,7 @@ source 'https://rails-assets.org'
 ruby '2.0.0'
 
 gem 'rails', '4.0.3'
+
 gem "mongoid", "~> 4.0.0.beta1"
 gem 'mongoid-versioning', github: 'simi/mongoid-versioning'
 gem 'rails_admin', "~> 0.6.2"
@@ -12,6 +13,7 @@ gem 'ruby-openid-store-mongo'
 gem 'turbolinks'
 gem 'kaminari'
 gem 'roo'
+gem 'iconv', '~> 1.0.4'
 
 # No need to specify a version for them
 gem "annotate"
