@@ -44,3 +44,7 @@ group :test do
   gem "tconsole"
   gem "database_cleaner", "~> 1.2.0"
 end
+
+group :production do
+  gem 'rails_12factor'
+end
