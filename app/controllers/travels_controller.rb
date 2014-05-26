@@ -50,8 +50,8 @@ class TravelsController < ApplicationController
   end
 
   def import
-    Product.import(params[:file])
-    redirect_to root_url, notice: "Products imported."
+    Travel.import(params[:file])
+    redirect_to '/admin/travel', notice: "Travels imported."
   end
 
   private

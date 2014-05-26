@@ -21,3 +21,9 @@
 
 en:
   hello: "Hello world"
+  admin:
+    actions:
+      import:
+        menu: Import
+        breadcrumb: Import
+        title: Import

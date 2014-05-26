@@ -45,4 +45,11 @@ class Travel
 
     self.distance_of_time_in_words(departure_time, arrival_time)
   end
+
+  # Import method
+  def self.import(file)
+    CSV.foreach(file.path, headers: true) do |row|
+      Travel.create! row.to_hash
+    end
+  end
 end

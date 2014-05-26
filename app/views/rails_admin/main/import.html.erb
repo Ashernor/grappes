@@ -1,0 +1,5 @@
+<h1>Import</h1>
+<%= form_tag '/travels/import', multipart: true do %>
+    <%= file_field_tag :file %>
+    <%= submit_tag "Import" %>
+<% end %>

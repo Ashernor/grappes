@@ -3,7 +3,9 @@ Grappes::Application.routes.draw do
 
   root :to => "travels#index"
 
-  resources :travels
+  resources :travels do
+    collection { post :import }
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

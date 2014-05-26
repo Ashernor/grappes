@@ -18,10 +18,18 @@ RailsAdmin.config do |config|
 
   config.actions do
     dashboard                     # mandatory
+    # collection actions
     index                         # mandatory
     new
     export
     bulk_delete
+    collection :import do
+      register_instance_option :link_icon do
+        'icon-file'
+      end
+
+    end
+    # member actions
     show
     edit
     delete
