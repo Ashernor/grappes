@@ -20,6 +20,7 @@ module Grappes
 
     config.i18n.enforce_available_locales = false
 
+    config.assets.enabled = true
     config.assets.precompile += ['rails_admin/rails_admin.css', 'rails_admin/rails_admin.js']
   end
 end
