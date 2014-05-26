@@ -1,0 +1,69 @@
+<%= form_for(@travel) do |f| %>
+  <% if @travel.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@travel.errors.count, "error") %> prohibited this travel from being saved:</h2>
+
+      <ul>
+      <% @travel.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :start_city %><br>
+    <%= f.text_field :start_city %>
+  </div>
+  <div class="field">
+    <%= f.label :end_city %><br>
+    <%= f.text_field :end_city %>
+  </div>
+  <div class="field">
+    <%= f.label :price %><br>
+    <%= f.text_field :price %>
+  </div>
+  <div class="field">
+    <%= f.label :places_available %><br>
+    <%= f.number_field :places_available %>
+  </div>
+  <div class="field">
+    <%= f.label :about %><br>
+    <%= f.text_field :about %>
+  </div>
+  <div class="field">
+    <%= f.label :departure %><br>
+    <%= f.datetime_select :departure %>
+  </div>
+  <div class="field">
+    <%= f.label :arrival %><br>
+    <%= f.datetime_select :arrival %>
+  </div>
+  <div class="field">
+    <%= f.label :direct_trip %><br>
+    <%= f.check_box :direct_trip %>
+  </div>
+  <div class="field">
+    <%= f.label :company %><br>
+    <%= f.text_field :company %>
+  </div>
+  <div class="field">
+    <%= f.label :lowcost %><br>
+    <%= f.check_box :lowcost %>
+  </div>
+  <div class="field">
+    <%= f.label :type %><br>
+    <%= f.text_field :type %>
+  </div>
+  <div class="field">
+    <%= f.label :start_airport %><br>
+    <%= f.text_field :start_airport %>
+  </div>
+  <div class="field">
+    <%= f.label :end_airport %><br>
+    <%= f.text_field :end_airport %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

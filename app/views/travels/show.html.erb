@@ -1,0 +1,69 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Start city:</strong>
+  <%= @travel.start_city %>
+</p>
+
+<p>
+  <strong>End city:</strong>
+  <%= @travel.end_city %>
+</p>
+
+<p>
+  <strong>Price:</strong>
+  <%= @travel.price %>
+</p>
+
+<p>
+  <strong>Places available:</strong>
+  <%= @travel.places_available %>
+</p>
+
+<p>
+  <strong>About:</strong>
+  <%= @travel.about %>
+</p>
+
+<p>
+  <strong>Departure time:</strong>
+  <%= @travel.departure %>
+</p>
+
+<p>
+  <strong>Arrival time:</strong>
+  <%= @travel.arrival %>
+</p>
+
+<p>
+  <strong>Direct trip:</strong>
+  <%= @travel.direct_trip %>
+</p>
+
+<p>
+  <strong>Company:</strong>
+  <%= @travel.company %>
+</p>
+
+<p>
+  <strong>Lowcost:</strong>
+  <%= @travel.lowcost %>
+</p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @travel.type %>
+</p>
+
+<p>
+  <strong>Start airport:</strong>
+  <%= @travel.start_airport %>
+</p>
+
+<p>
+  <strong>End airport:</strong>
+  <%= @travel.end_airport %>
+</p>
+
+<%= link_to 'Edit', edit_travel_path(@travel) %> |
+<%= link_to 'Back', travels_path %>

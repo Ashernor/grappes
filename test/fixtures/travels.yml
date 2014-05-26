@@ -1,0 +1,31 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  start_city: MyString
+  end_city: MyString
+  price: 1.5
+  places_available: 1
+  about: MyString
+  departure_time: 2014-05-20 22:52:37
+  arrival_time: 2014-05-20 22:52:37
+  direct_trip: false
+  company: MyString
+  lowcost: false
+  type: 
+  start_airport: MyString
+  end_airport: MyString
+
+two:
+  start_city: MyString
+  end_city: MyString
+  price: 1.5
+  places_available: 1
+  about: MyString
+  departure_time: 2014-05-20 22:52:37
+  arrival_time: 2014-05-20 22:52:37
+  direct_trip: false
+  company: MyString
+  lowcost: false
+  type: 
+  start_airport: MyString
+  end_airport: MyString
