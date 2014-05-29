@@ -10,4 +10,8 @@
  *
  *= require_self
  *= require jquery.ui.all
+ *= require twitter/bootstrap
+ *= require twitter/bootstrap/_responsive
  */
+
+.row-fluid {margin-top: 20px;}

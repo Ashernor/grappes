@@ -6,6 +6,10 @@ window.travelsJs =
 
   init: ->
     $(".datepicker").datepicker();
+    availableTags = $(".city").data("city")
+    $(".autocomplete").autocomplete {
+      source: availableTags
+    }
 
     min_budget = $("#min_budget").val()
     max_budget = $("#max_budget").val()

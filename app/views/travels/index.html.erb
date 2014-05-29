@@ -1,84 +1,80 @@
-<h1>Voyages</h1>
-
-Depuis :
-<%= form_tag '', :method => :get do %>
-    <%= text_field_tag :from %>
-    <%= submit_tag 'Filter' %>
-<% end %>
-ClearFrom
-<%= form_tag '', :method => :get do %>
-    <%= hidden_field_tag :from %>
-    <%= submit_tag 'Filter' %>
-<% end %>
-<p>
-  <%= form_tag '', :method => :get do %>
-      <%= hidden_field_tag :min_budget, params[:min_budget] %>
-      <%= hidden_field_tag :max_budget, params[:max_budget] %>
-      <p id="amount"></p>
-    <div id="slider-range"></div>
-      <%= submit_tag 'Filter' %>
-  <% end %>
-</p>
-<p>
-  <%= form_tag '', :method => :get do %>
-      <%= datetime_field_tag :min_date, params[:min_date], class:"datepicker" %>
-      <%= datetime_field_tag :max_date, params[:max_date], class:"datepicker" %>
-    <%= submit_tag 'Filter' %>
-<% end %>
-</p>
-<p>
-  Nombre de personne min.
-  <%= form_tag '', :method => :get do %>
-      <%= number_field_tag :nb_people, params[:nb_people] %>
-      <%= submit_tag 'Filter' %>
-  <% end %>
-</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>Start city</th>
-      <th>End city</th>
-      <th>Price</th>
-      <th>Places available</th>
-      <th>About</th>
-      <th>Departure</th>
-      <th>Arrival</th>
-      <th>Direct trip</th>
-      <th>Company</th>
-      <th>Lowcost</th>
-      <th>Type</th>
-      <th>Start airport</th>
-      <th>End airport</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @travels.each do |travel| %>
-      <tr>
-        <td><%= travel.start_city %></td>
-        <td><%= travel.end_city %></td>
-        <td><%= travel.price %></td>
-        <td><%= travel.places_available %></td>
-        <td><%= travel.about %></td>
-        <td><%= travel.departure %></td>
-        <td><%= travel.arrival %></td>
-        <td><%= travel.direct_trip %></td>
-        <td><%= travel.company %></td>
-        <td><%= travel.lowcost %></td>
-        <td><%= travel.type %></td>
-        <td><%= travel.start_airport %></td>
-        <td><%= travel.end_airport %></td>
-        <td><%= link_to 'Show', travel %></td>
-        <td><%= link_to 'Edit', edit_travel_path(travel) %></td>
-        <td><%= link_to 'Destroy', travel, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+<div class="span3">
+  <div class="well sidebar-nav">
+    <span class="city" data-city='<%= @citys %>'></span>
+    Ville de départ :
+    <%= form_tag '', :method => :get do %>
+        <%= text_field_tag :from, params[:from] , class: "autocomplete" %>
+        <%= submit_tag 'Filter', class: "btn" %>
     <% end %>
-  </tbody>
-</table>
+    <p>
+      Echelle de prix :
+      <%= form_tag '', :method => :get do %>
+          <%= hidden_field_tag :min_budget, params[:min_budget] %>
+          <%= hidden_field_tag :max_budget, params[:max_budget] %>
+          <p id="amount"></p>
+        <div id="slider-range"></div>
+          <%= submit_tag 'Filter', class: "btn" %>
+      <% end %>
+    </p>
+    <p>
+      Dates :
+      <%= form_tag '', :method => :get do %>
+          <%= datetime_field_tag :min_date, params[:min_date], class:"datepicker", placeholder: "Date de départ" %>
+          <%= datetime_field_tag :max_date, params[:max_date], class:"datepicker", placeholder: "Date de fin" %>
+        <%= submit_tag 'Filter', class: "btn" %>
+    <% end %>
+    </p>
+    <p>
+      Nombre de personne min.
+      <%= form_tag '', :method => :get do %>
+          <%= number_field_tag :nb_people, params[:nb_people] %>
+          <%= submit_tag 'Filter', class: "btn" %>
+      <% end %>
+    </p>
+    <%= form_tag '', :method => :get do %>
+        <%= hidden_field_tag :clear %>
+        <%= submit_tag 'Annuler les filtres', class: "btn btn-big" %>
+    <% end %>
+    </div>
+  </div>
+  <div class="span8">
+    <div class="panel panel-default">
+      <!-- Default panel contents -->
+        <table class="table table-condensed table-striped">
+          <thead>
+            <tr>
+              <th>Start city</th>
+              <th>End city</th>
+              <th>Price</th>
+              <th>Departure</th>
+              <th>Arrival</th>
+              <th>Direct trip</th>
+              <th>Company</th>
+              <th>Type</th>
+              <th>Start airport</th>
+              <th>End airport</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% @travels.each do |travel| %>
+              <tr>
+                <td><%= travel.start_city %></td>
+                <td><%= travel.end_city %></td>
+                <td><%= travel.price %></td>
+                <td><%= travel.departure %></td>
+                <td><%= travel.arrival %></td>
+                <td><%= travel.direct_trip %></td>
+                <td><%= travel.company %></td>
+                <td><%= travel.type %></td>
+                <td><%= travel.start_airport %></td>
+                <td><%= travel.end_airport %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+  </div>
 
 <% content_for(:more_js) do %>
     <script type="text/javascript">

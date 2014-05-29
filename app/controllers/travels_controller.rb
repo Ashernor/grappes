@@ -8,6 +8,7 @@ class TravelsController < ApplicationController
     @travels = @travels.in_budget(params[:min_budget], params[:max_budget]) if params[:min_budget].present?
     @travels = @travels.between_dates(params[:min_date], params[:max_date]) if params[:min_date].present? && params[:max_date].present?
     @travels = @travels.with_people(params[:nb_people]) if params[:nb_people].present?
+    @citys = Travel.all.map(&:start_city).uniq
   end
 
   # GET /travels/1
