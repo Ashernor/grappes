@@ -14,5 +14,4 @@
 //= require jquery_ujs
 //= require jquery.ui.all
 //= require turbolinks
-//= require autocomplete-rails
 //= require travels.js
