@@ -1,5 +1,6 @@
 require 'action_view'
 include ActionView::Helpers::DateHelper
+include Geocoder::Model::Mongoid
 
 class Travel
   include Mongoid::Document
@@ -18,6 +19,10 @@ class Travel
   field :type, type: String
   field :start_airport, type: String
   field :end_airport, type: String
+  field :coordinates, :type => Array
+
+  geocoded_by :end_city               # can also be an IP address
+  after_validation :geocode          # auto-fetch coordinates
 
   # We use several scopes to filter in the model
 

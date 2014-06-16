@@ -37,25 +37,37 @@ window.travelsJs =
     $(".ui-slider-handle").eq(0).append(tooltip1)
     $(".ui-slider-handle").eq(1).append(tooltip2)
 
+  geoMap: ->
+    map = L.mapbox.map('map', 'examples.h186knp8').setView([35.32, 25], 3)
+    myLayer = L.mapbox.featureLayer().addTo(map)
+    myLayer.on 'layeradd', (e) ->
+      marker = e.layer
+      feature = marker.feature
+      popupContent =  '<a target="_blank" class="popup" href="' + feature.properties.url + '">' +
+        '<img src="' + feature.properties.image + '" />' +
+        feature.properties.city +
+        '</a>'
+      marker.bindPopup popupContent,
+        closeButton: false
+        minWidth: 320
+    geoJson = []
+    $("table tr").each ->
+      if $(".coordinates", this).text() != ""
+        coordinates = JSON.parse($(".coordinates", this).text())
+        city = $(".city", this).text()
+        geo = {
+          type: 'Feature',
+          "geometry": { "type": "Point", "coordinates": coordinates},
+          "properties":
+            {
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Cherry_Blossoms_and_Washington_Monument.jpg/320px-Cherry_Blossoms_and_Washington_Monument.jpg",
+            "url": "https://en.wikipedia.org/wiki/Washington,_D.C.",
+            "marker-symbol": "star",
+            "marker-color": "#ff8888",
+            "marker-size": "large",
+            "city": city
+            }
+        }
+        geoJson.push(geo)
 
-    citys = []
-    $(".end_city").each ->
-      citys.push($(this).text())
-
-    mapOptions = {
-      center: new google.maps.LatLng( 48.861954, 2.270895600000017),
-      zoom: 3
-    }
-    map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
-    geocoder = new google.maps.Geocoder
-    for city in citys
-      console.log(city)
-      geocoderParams =
-        address: city
-      results = geocoder.geocode geocoderParams, (results, status) ->
-        if status == google.maps.GeocoderStatus.OK
-          latlng = results[0].geometry.location
-          marker = new google.maps.Marker
-            position: latlng
-            map: map
+    myLayer.setGeoJSON(geoJson);

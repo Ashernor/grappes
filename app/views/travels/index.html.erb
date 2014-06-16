@@ -18,6 +18,7 @@
               <th>Type</th>
               <th>Start airport</th>
               <th>End airport</th>
+              <th>Géoloc</th>
             </tr>
           </thead>
 
@@ -25,7 +26,7 @@
             <% @travels.each do |travel| %>
               <tr>
                 <td><%= travel.start_city %></td>
-                <td class="end_city"><%= travel.end_city %></td>
+                <td class="city"><%= travel.end_city %></td>
                 <td><%= travel.price %></td>
                 <td><%= travel.departure %></td>
                 <td><%= travel.arrival %></td>
@@ -34,6 +35,7 @@
                 <td><%= travel.type %></td>
                 <td><%= travel.start_airport %></td>
                 <td><%= travel.end_airport %></td>
+                <td class="coordinates"><%= travel.coordinates %></td>
               </tr>
             <% end %>
           </tbody>
@@ -44,5 +46,31 @@
 <% content_for(:more_js) do %>
     <script type="text/javascript">
         travelsJs.init();
+
+
+
+
+
+        // Add custom popups to each using our custom feature properties
+        /*myLayer.on('layeradd', function(e) {
+            var marker = e.layer,
+                    feature = marker.feature;
+
+// Create custom popup content
+            var popupContent =  '<a target="_blank" class="popup" href="' + feature.properties.url + '">' +
+                    '<img src="' + feature.properties.image + '" />' +
+                    feature.properties.city +
+                    '</a>';
+
+// http://leafletjs.com/reference.html#popup
+            marker.bindPopup(popupContent,{
+                closeButton: false,
+                minWidth: 320
+            });
+        });   */
+
+        // Add features to the map
+        travelsJs.geoMap();
+
     </script>
 <% end %>
