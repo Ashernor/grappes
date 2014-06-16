@@ -90,7 +90,7 @@ a {
     }
 
     .city_search {
-      background: url('/assets/picto_pin.png') no-repeat left 6px;
+      background: image-url('picto_pin.png') no-repeat left 6px;
 
       input {
         width: 200px;
@@ -98,15 +98,15 @@ a {
     }
 
     .date_pickers {
-      background: url('/assets/picto_calendrier.png') no-repeat left 13px;
+      background: image-url('picto_calendrier.png') no-repeat left 13px;
 
       input {
-        background: white url('/assets/fleche_bas.png') no-repeat right 8px;
+        background: white image-url('fleche_bas.png') no-repeat right 8px;
       }
     }
 
     .nb_people {
-      background: url('/assets/picto_people.png') no-repeat left 14px;
+      background: image-url('picto_people.png') no-repeat left 14px;
 
       input {
         width: 30px;
@@ -114,7 +114,7 @@ a {
     }
 
     .price_range {
-      background: url('/assets/picto_budget.png') no-repeat left 11px;
+      background: image-url('picto_budget.png') no-repeat left 11px;
       margin-top: -5px;
       width: 160px;
 
@@ -148,7 +148,7 @@ a {
         }
 
         .ui-slider-handle {
-          background: url('/assets/reglette_budget.png') no-repeat;
+          background: image-url('reglette_budget.png') no-repeat;
           height: 15px;
           width: 5px;
           top: -2px;
