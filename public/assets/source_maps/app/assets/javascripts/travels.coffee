@@ -23,16 +23,20 @@ window.travelsJs =
     if (max_budget == "")
       max_budget = 300
 
+    tooltip1 = $('<div id="tooltip_left" class="tooltip" />').text(min_budget+"€")
+    tooltip2 = $('<div id="tooltip_right" class="tooltip" />').text(max_budget+"€")
     $( "#slider-range" ).slider {
       range: true,
       min: 0,
       max: 500,
       values: [min_budget, max_budget],
       slide: (event, ui) ->
-        $("#min_budget").val(ui.values[ 0 ]);
-        $("#max_budget").val(ui.values[ 1 ]);
-        $("#amount").text(ui.values[ 0 ] + " - " + ui.values[ 1 ])
+        tooltip1.text(ui.values[0]+"€")
+        tooltip2.text(ui.values[1]+"€")
     }
+    $(".ui-slider-handle").eq(0).append(tooltip1)
+    $(".ui-slider-handle").eq(1).append(tooltip2)
+
 
     citys = []
     $(".end_city").each ->
@@ -55,4 +59,3 @@ window.travelsJs =
           marker = new google.maps.Marker
             position: latlng
             map: map
-

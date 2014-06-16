@@ -114,8 +114,8 @@ a {
     }
 
     .price_range {
-      background: url('/assets/picto_budget.png') no-repeat left 2px;
-
+      background: url('/assets/picto_budget.png') no-repeat left 11px;
+      margin-top: -5px;
       width: 160px;
 
       .ui-slider-horizontal {
@@ -123,10 +123,24 @@ a {
         border: none;
       }
 
+      form {
+        padding-top: 5px;
+      }
+
       #slider-range {
         margin-top: 15px;
         margin-bottom: 10px;
 
+        .tooltip {
+          background: rgba(255, 255, 255, 0.7);
+          border-radius: 3px;
+          padding: 2px 5px;
+          font-size: 0.70em;
+          color: #000;
+          position: absolute;
+          top: -20px;
+          left: -10px;
+        }
 
         .ui-slider-range {
           background: #20343f;
