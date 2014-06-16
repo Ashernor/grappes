@@ -5,6 +5,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= content_for?(:title) ? yield(:title) : "Grappes de raisin" %></title>
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+  <link href='http://fonts.googleapis.com/css?family=Exo+2:400,300,700,500,200' rel='stylesheet' type='text/css'>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
@@ -12,17 +14,48 @@
 </head>
 <body>
 
-<div class="navbar navbar-fixed-top">
-  <div class="navbar-inner">
-    <div class="container-fluid">
-      <a class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </a>
-      <div class="container-fluid nav-collapse">
-      </div><!--/.nav-collapse -->
-    </div>
+<div class="navbar">
+  <div class="container">
+    <h1><a href="/"><%= image_tag("logo_grappy.png") %></a></h1>
+
+    <ul class="primary_navigation">
+      <li><a href="#">L'actu du raisin</a></li>
+      <li><a href="#">Qui sommes-nous ?</a></li>
+      <li><a href="#"><%= image_tag("picto_facebook.png") %></a></li>
+      <li><a href="#"><%= image_tag("picto_twitter.png") %></a></li>
+      <li><a href="#"><%= image_tag("picto_instagram.png") %></a></li>
+    </ul>
+  </div>
+</div>
+<div class="searchbar">
+  <div class="container">
+    <span class="city_search">
+      Ville de départ :
+      <%= form_tag '', :method => :get do %>
+        <%= text_field_tag :from, params[:from] , class: "autocomplete" %>
+      <% end %>
+    </span>
+    <span class="date_pickers">
+        Aller et retour
+        <%= form_tag '', :method => :get do %>
+          <%= datetime_field_tag :min_date, params[:min_date], class:"datepicker", placeholder: "Date de départ" %>
+          <%= datetime_field_tag :max_date, params[:max_date], class:"datepicker", placeholder: "Date de fin" %>
+    <% end %>
+    </span>
+    <span class="price_range">
+      Echelle de prix :
+      <%= form_tag '', :method => :get do %>
+          <%= hidden_field_tag :min_budget, params[:min_budget] %>
+          <%= hidden_field_tag :max_budget, params[:max_budget] %>
+        <div id="slider-range"></div>
+      <% end %>
+    </span>
+    <span class="nb_people">
+      Amis
+          <%= form_tag '', :method => :get do %>
+          <%= number_field_tag :nb_people, params[:nb_people] %>
+      <% end %>
+    </span>
   </div>
 </div>
 

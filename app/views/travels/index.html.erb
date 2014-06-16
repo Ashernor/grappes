@@ -1,44 +1,9 @@
 <div class="span3">
-  <div class="well sidebar-nav">
-    <span class="city" data-city='<%= @citys %>'></span>
-    Ville de départ :
-    <%= form_tag '', :method => :get do %>
-        <%= text_field_tag :from, params[:from] , class: "autocomplete" %>
-        <%= submit_tag 'Filter', class: "btn" %>
-    <% end %>
-    <p>
-      Echelle de prix :
-      <%= form_tag '', :method => :get do %>
-          <%= hidden_field_tag :min_budget, params[:min_budget] %>
-          <%= hidden_field_tag :max_budget, params[:max_budget] %>
-          <p id="amount"></p>
-        <div id="slider-range"></div>
-          <%= submit_tag 'Filter', class: "btn" %>
-      <% end %>
-    </p>
-    <p>
-      Dates :
-      <%= form_tag '', :method => :get do %>
-          <%= datetime_field_tag :min_date, params[:min_date], class:"datepicker", placeholder: "Date de départ" %>
-          <%= datetime_field_tag :max_date, params[:max_date], class:"datepicker", placeholder: "Date de fin" %>
-        <%= submit_tag 'Filter', class: "btn" %>
-    <% end %>
-    </p>
-    <p>
-      Nombre de personne min.
-      <%= form_tag '', :method => :get do %>
-          <%= number_field_tag :nb_people, params[:nb_people] %>
-          <%= submit_tag 'Filter', class: "btn" %>
-      <% end %>
-    </p>
-    <%= form_tag '', :method => :get do %>
-        <%= hidden_field_tag :clear %>
-        <%= submit_tag 'Annuler les filtres', class: "btn btn-big" %>
-    <% end %>
-    </div>
-  </div>
   <div class="span8">
     <div class="panel panel-default">
+      <div id="map">
+
+      </div>
       <!-- Default panel contents -->
         <table class="table table-condensed table-striped">
           <thead>
@@ -60,7 +25,7 @@
             <% @travels.each do |travel| %>
               <tr>
                 <td><%= travel.start_city %></td>
-                <td><%= travel.end_city %></td>
+                <td class="end_city"><%= travel.end_city %></td>
                 <td><%= travel.price %></td>
                 <td><%= travel.departure %></td>
                 <td><%= travel.arrival %></td>

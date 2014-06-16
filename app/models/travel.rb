@@ -20,10 +20,13 @@ class Travel
   field :end_airport, type: String
 
   # We use several scopes to filter in the model
+
+  # We want to only return the travels between a range of price
   scope :in_budget, lambda { |start_price, end_price|
     where(:price => {'$gte' => start_price.to_f, '$lte' => end_price.to_f})
   }
 
+  # Only return the travel between a date range
   scope :between_dates, lambda { |start_date, end_date|
     all_of(
       {:departure => {'$gte' => Date.strptime(start_date,"%m/%d/%Y").to_datetime }},

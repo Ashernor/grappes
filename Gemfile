@@ -28,22 +28,24 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'
 gem 'jquery-ui-rails', "~> 4.2.0"
-gem 'bootstrap-sass-rails'
 
 group :development, :test do
   gem 'debugger'
   gem "seed_dump"
   gem "binding_of_caller"
   gem "better_errors"
+  gem 'coffee-rails-source-maps'
 end
 
 group :test do
-  gem "shoulda", :require => false
-  gem 'mocha', :require => false
+  gem "factory_girl_rails"
+  gem "shoulda"
+  gem 'mocha'
   gem "nokogiri"
   gem "capybara"
   gem "tconsole"
   gem "database_cleaner", "~> 1.2.0"
+  gem "tconsole"
 end
 
 group :production do
