@@ -4,11 +4,26 @@ class TravelsController < ApplicationController
   # GET /travels
   def index
     @travels = Travel.all
+    # TODO : better search handling
     @travels = @travels.from(params[:from]) if params[:from].present?
     @travels = @travels.in_budget(params[:min_budget], params[:max_budget]) if params[:min_budget].present?
     @travels = @travels.between_dates(params[:min_date], params[:max_date]) if params[:min_date].present? && params[:max_date].present?
     @travels = @travels.with_people(params[:nb_people]) if params[:nb_people].present?
+    @travels = @travels.within_duration(params[:min_travel_time], params[:max_travel_time]) if params[:min_travel_time].present?
+    @travels = @travels.number_of_stopover(params[:stopover]) if params[:stopover].present?
+    @travels = @travels.with_companies(params[:company]) if params[:company].present?
+    #between start time and end_time
+    @travels = @travels.within_start_time(params[:min_start_time], params[:max_start_time]) if params[:min_start_time].present?
+    @travels = @travels.within_end_time(params[:min_end_time], params[:max_end_time]) if params[:min_end_time].present?
+
+
+    @travels = @travels.order_by(:price => :asc).limit(50)
+
     @citys = Travel.all.map(&:start_city).uniq
+    @front_travels = Travel.prefered("ok").empty? ? Travel.all : Travel.prefered("ok")
+    @companies = Travel.all.pluck(:company).uniq
+    @end_countries = Travel.all.pluck(:end_country).uniq
+
   end
 
   # GET /travels/1
