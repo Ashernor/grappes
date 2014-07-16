@@ -136,7 +136,6 @@ window.travelsJs =
     geoJson = this.parseContent()
     myLayer.setGeoJSON(geoJson);
 
-    #todo set interval
     parent = this
 
     $("form input").change ->
@@ -154,7 +153,7 @@ window.travelsJs =
 
     $("#sidebar_right li .open_pin").click ->
       $("#right_button").click()
-      title = $(this).parent().find(".city").text()
+      title = $(this).parent().find(".city").data("city")
       clickButton(title)
       return false;
 
