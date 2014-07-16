@@ -38,7 +38,17 @@ p, h1, h2, h3, h4, h5, h6, a {
 }
 
 .color1 {
+  background: #4DF3F8 !important;
+  z-index: 1000 !important;
+
+  &:after {
+    border-top-color: #4DF3F8 !important;
+  }
+}
+
+.color1 {
   background: #74d4f8 !important;
+  z-index: 999 !important;
 
   &:after {
     border-top-color: #74d4f8 !important;
@@ -47,6 +57,7 @@ p, h1, h2, h3, h4, h5, h6, a {
 
 .color2 {
   background: #57aace !important;
+  z-index: 998 !important;
 
   &:after {
     border-top-color: #57aace !important;
@@ -55,6 +66,7 @@ p, h1, h2, h3, h4, h5, h6, a {
 
 .color3 {
   background: #3e7f9c !important;
+  z-index: 997 !important;
 
   &:after {
     border-top-color: #3e7f9c !important;
@@ -63,11 +75,18 @@ p, h1, h2, h3, h4, h5, h6, a {
 
 .color4 {
   background: #203a4f !important;
+  z-index: 996 !important;
 
   &:after {
     border-top-color: #203a4f !important;
   }
 }
+
+.color5 {z-index: 995 !important;}
+.color6 {z-index: 994 !important;}
+.color7 {z-index: 993 !important;}
+.color8 {z-index: 992 !important;}
+.color9 {z-index: 991 !important;}
 
 .mapbox-info-toggle {
   display: none !important;
