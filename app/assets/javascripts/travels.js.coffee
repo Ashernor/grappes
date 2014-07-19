@@ -121,7 +121,7 @@ window.travelsJs =
     myLayer.on 'layeradd', (e) ->
       marker = e.layer
       feature = marker.feature
-      popupContent =  '<div class="left"><h4>'+feature.properties.city+' <span>'+feature.properties.airport+'</span></h4>'+'<img src="' + feature.properties.image + '" /><p>Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum</p></div><div class="right"><ul class="start"><li><b>'+feature.properties.city+'</b><br/><b>FIN</b></li><li>'+feature.properties.company+'<br/>8h30- 10h36</li></ul><ul class="end"><li><b>'+feature.properties.city+'</b><br/><b>FIN</b></li><li>'+feature.properties.company+'<br/>8h30- 10h36</li></ul></div><div class="bottom">Reserver ce trajet pour <span>'+feature.properties.price+'</span><div></div>'
+      popupContent =  '<div class="left"><h4>'+feature.properties.end_city+'</h4>'+'<img src="' + feature.properties.image + '" /><span class="blurred"></span><p>'+feature.properties.content+'</p></div><div class="right"><ul class="start"><li><span class="start_date">'+feature.properties.start_date+'</span><br/><b>'+feature.properties.start_city+'</b><br/><b>'+feature.properties.end_city+'</b></li><li class="company">'+feature.properties.company+'<br/><span class="hours">'+feature.properties.start_departure_time+'- '+feature.properties.start_arrival_time+'</span></li></ul><ul class="end"><li><span class="end_date">'+feature.properties.end_date+'</span><br/><b>'+feature.properties.end_city+'</b><br/><b>'+feature.properties.start_city+'</b></li><li class="company">'+feature.properties.company+'<br/><span class="hours">'+feature.properties.start_departure_time+'- '+feature.properties.start_arrival_time+'</span></li></ul></div><div class="bottom">Reserver ce trajet pour <span>'+feature.properties.price+'</span><div></div>'
       marker.bindPopup popupContent,
         closeButton: false
         minWidth: 320
@@ -237,19 +237,33 @@ window.travelsJs =
         coordinates = $(this).data("coordinates")
         company = $(this).data("company")
         color = $(this).data("color")
-        city = $(".city", this).data("city")
-        airport = $(".city", this).data("airport")
+        start_airport = $(".city", this).data("startairport")
+        end_airport = $(".city", this).data("endairport")
+        start_city = $(".city", this).data("startcity")+" <span>("+start_airport+")</span>"
+        end_city = $(".city", this).data("endcity")+" <span>("+end_airport+")</span>"
         price = $(".price span", this).text()
+        start_date = $(".start", this).html().slice(0, - 9)
+        end_date = $(".end", this).html().slice(0, - 9)
+        content = $(this).data("content")
+        start_departure_time = $(this).data("starttime").toString().replace(".","h")
+        start_arrival_time = $(this).data("endtime").toString().replace(".","h")
         geo = {
           type: 'Feature',
           "geometry": { "type": "Point", "coordinates": coordinates},
           "properties": {
             "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Cherry_Blossoms_and_Washington_Monument.jpg/320px-Cherry_Blossoms_and_Washington_Monument.jpg",
-            "city": city,
-            "airport": airport,
-            "title": city,
+            "start_city": start_city,
+            "start_airport": start_airport,
+            "end_city": end_city,
+            "end_airport": end_airport,
+            "title": end_city,
             "price": price,
             "company": company,
+            "start_date": start_date,
+            "end_date": end_date,
+            "content": content,
+            "start_departure_time": start_departure_time,
+            "start_arrival_time": start_arrival_time,
             "divIcon": {
               "iconSize": [50, 50],
               "iconAnchor": [25, 25],

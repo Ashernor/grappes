@@ -22,6 +22,7 @@ class TravelsController < ApplicationController
     @citys = Travel.all.map(&:start_city).uniq
     @front_travels = Travel.prefered("ok").empty? ? Travel.all : Travel.prefered("ok")
     @companies = Travel.all.pluck(:company).uniq
+    @moods = Mood.all
     @end_countries = Travel.all.pluck(:end_country).uniq
 
   end

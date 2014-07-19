@@ -29,8 +29,10 @@ class Travel
   field :start_time, type: Float
   field :end_time, type: Float
   field :duration, type: Integer
-
   geocoded_by :end_city               # can also be an IP address
+
+  # MongoDB Associations
+  embeds_many :moods
 
   before_validation :set_duration
   before_validation :set_start_time
