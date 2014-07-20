@@ -30,6 +30,7 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails', "~> 4.2.0"
 gem 'mapbox-rails', '~> 1.6.1.1'
 gem "geocoder"
+gem "mongoid-paperclip", :require => "mongoid_paperclip"
 
 group :development, :test do
   gem 'debugger'

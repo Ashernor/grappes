@@ -5,6 +5,7 @@ include Geocoder::Model::Mongoid
 class Travel
   include Mongoid::Document
   include Mongoid::Timestamps
+  include Mongoid::Paperclip
 
   field :start_city, type: String
   field :end_city, type: String
@@ -33,6 +34,11 @@ class Travel
 
   # MongoDB Associations
   embeds_many :moods
+  accepts_nested_attributes_for :moods
+
+  # Image upload with Paperclip & Mongoid
+  has_mongoid_attached_file :image
+  do_not_validate_attachment_file_type :image
 
   before_validation :set_duration
   before_validation :set_start_time
