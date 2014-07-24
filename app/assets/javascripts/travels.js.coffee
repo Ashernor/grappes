@@ -138,6 +138,19 @@ window.travelsJs =
 
     parent = this
 
+    get_json = (url) ->
+      $.getJSON "#{url}.json"
+
+    $.marker = L.marker(new L.LatLng(0, 0), {})
+    createMarker = (coordinates) ->
+      $.marker.setLatLng(L.latLng(
+        coordinates["lat"],
+        coordinates["lng"]
+      ))
+      $.marker.addTo(map);
+      $("img.leaflet-marker-icon").attr("src","/picto_pin.png").css("width","auto").css("margin-left","-15px").css("margin-top","-37px")
+
+
     $("form input").change ->
       $(this).parent().addClass("modified") if $(this).parent().attr("method") == "get"
       $(this).parent().parent().addClass("modified") if $(this).parent().parent().attr("method") == "get"
@@ -145,6 +158,12 @@ window.travelsJs =
         $(".price_range span").text("Budget par personne")
       else
         $(".price_range span").text("Budget")
+      if $(this).hasClass("autocomplete")
+        get_json("https://maps.googleapis.com/maps/api/geocode/json?address=#{$(this).val()}").done (e) ->
+          json = e.results[0].geometry.location
+          createMarker(json)
+
+
       loadParams()
 
     $("form").submit (e) ->
@@ -161,6 +180,7 @@ window.travelsJs =
       $(".modified input").val("")
       loadParams()
       e.preventDefault()
+
 
     loadParams= ->
       params = "/?"+$(".modified").serialize().replace(/\utf8=%E2%9C%93&/g,"")+" #travel_list"

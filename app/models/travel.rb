@@ -37,7 +37,13 @@ class Travel
   accepts_nested_attributes_for :moods
 
   # Image upload with Paperclip & Mongoid
-  has_mongoid_attached_file :image
+  has_mongoid_attached_file :image,
+    :styles => {
+      :original => ['1920x1680>', :jpg],
+      :small    => ['100x100#',   :jpg],
+      :medium   => ['250x250',    :jpg],
+      :large    => ['500x500>',   :jpg]
+    }
   do_not_validate_attachment_file_type :image
 
   before_validation :set_duration
