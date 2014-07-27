@@ -4,16 +4,23 @@
 
 window.travelsJs =
   init: ->
+    parent = this
     options =
-      format: 'dd-mm-yyyy',
-      monthNames:['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Decembre'],
+      dateFormat: 'dd/mm/yy',
+      monthNames:['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
       monthNamesShort: ['Janv.','Févr.','Mars','Avril','Mai','Juin',
                         'Juil.','Août','Sept.','Oct.','Nov.','Déc.'],
       dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
       dayNamesShort: ['Dim.','Lun.','Mar.','Mer.','Jeu.','Ven.','Sam.'],
-      dayNamesMin: ['D','L','M','M','J','V','S']
+      dayNamesMin: ['D','L','M','M','J','V','S'],
+      minDate: 0
     $(".datepicker").datepicker(options);
     availableTags = $("#travel_list").data("cities")
+    $("#min_date").change ->
+      val = $("#min_date").val().split('/')
+      date = new Date(val[1]+"-"+parseInt(val[0])+"-"+val[2])
+      date.setDate(date.getDate()+1)
+      $("#max_date").val($.datepicker.formatDate('dd/mm/yy', date))
     $(".autocomplete").autocomplete {
       source: availableTags
     }
@@ -37,6 +44,8 @@ window.travelsJs =
       max: 500,
       values: [min_budget, max_budget],
       slide: (event, ui) ->
+        if ((ui.values[0]+50) >= ui.values[1])
+          return false
         $("#min_budget").val(ui.values[0])
         $("#max_budget").val(ui.values[1])
         tooltip1.text(ui.values[0]+"€")
@@ -45,6 +54,7 @@ window.travelsJs =
     stop: ->
       $(this).parent().parent().find("form").addClass("modified")
       $(this).parent().parent().find("form").submit()
+      parent.changeFromBackground()
     $(".price_range .ui-slider-handle").eq(0).append(tooltip1)
     $(".price_range .ui-slider-handle").eq(1).append(tooltip2)
 
@@ -61,6 +71,8 @@ window.travelsJs =
       max: 10,
       values: [min_travel_time, max_travel_time],
       slide: (event, ui) ->
+        if (ui.values[0] == ui.values[1])
+          return false
         $("#min_travel_time").val(ui.values[0])
         $("#max_travel_time").val(ui.values[1])
         tooltip3.text(ui.values[0]+"h")
@@ -69,6 +81,7 @@ window.travelsJs =
     stop: ->
       $(this).parent().parent().find("form").addClass("modified")
       $(this).parent().parent().find("form").submit()
+      parent.changeFromBackground()
     $(".travel_time .ui-slider-handle").eq(0).append(tooltip3)
     $(".travel_time .ui-slider-handle").eq(1).append(tooltip4)
 
@@ -88,6 +101,10 @@ window.travelsJs =
       }
     );
     $("#accordion > div").css({ 'height': 'auto' });
+    $("#nb_people").spinner {
+      stop: ->
+        parent.changeFromBackground()
+    }
 
     $("#left_button").click ->
       if ($("#sidebar_left").hasClass("active"))
@@ -114,6 +131,7 @@ window.travelsJs =
       return false;
 
   geoMap: ->
+    parent = this
     map = L.mapbox.map('map', 'examples.h186knp8', { zoomControl:false }).setView([48.32, 2.5], 5)
 
     myLayer = L.mapbox.featureLayer().addTo(map)
@@ -136,8 +154,6 @@ window.travelsJs =
     geoJson = this.parseContent()
     myLayer.setGeoJSON(geoJson);
 
-    parent = this
-
     get_json = (url) ->
       $.getJSON "#{url}.json"
 
@@ -152,6 +168,7 @@ window.travelsJs =
 
 
     $("form input").change ->
+      parent.changeFromBackground()
       $(this).parent().addClass("modified") if $(this).parent().attr("method") == "get"
       $(this).parent().parent().addClass("modified") if $(this).parent().parent().attr("method") == "get"
       if parseInt( $("#nb_people").val()) > 1
@@ -162,8 +179,6 @@ window.travelsJs =
         get_json("https://maps.googleapis.com/maps/api/geocode/json?address=#{$(this).val()}").done (e) ->
           json = e.results[0].geometry.location
           createMarker(json)
-
-
       loadParams()
 
     $("form").submit (e) ->
@@ -179,7 +194,18 @@ window.travelsJs =
     $("#reset_filter").click (e) ->
       $(".modified input").val("")
       loadParams()
+      # Reset sliders
+      resetSlider(".travel_time", 2, 6, "2h", "6h")
+      resetSlider(".price_range", 75, 300, "75€", "300€")
+      resetSlider(".within_time .start", 540, 1080, "9h0", "20h30")
+      resetSlider(".within_time .end", 540, 1080, "9h0", "20h30")
       e.preventDefault()
+
+    resetSlider= (element, min_val, max_val, min, max) ->
+      $("#{element} .ui-slider").slider('values',0, min_val)
+      $("#{element} .ui-slider").slider('values',1, max_val)
+      $("#{element} #tooltip_left").text(min)
+      $("#{element} #tooltip_right").text(max)
 
 
     loadParams= ->
@@ -194,6 +220,11 @@ window.travelsJs =
         if (marker.feature.properties.title == city)
           marker.openPopup();
 
+  changeFromBackground: ->
+    if $("#from").val() == ""
+      $("#from").css("background","red")
+    else
+      $("#from").css("background","#fff")
 
   createCustomSlider: (slider_id, min, max, min_slider, max_slider, parent, type) ->
     min_value = $(min).val()
@@ -208,6 +239,8 @@ window.travelsJs =
       max: max_slider,
       values: [min_value, max_value],
       slide: (event, ui) ->
+        if (ui.values[0] == ui.values[1])
+          return false
         $(this).parent().parent().find("form").addClass("modified")
         tooltip1.text(ui.values[0]+type)
         tooltip2.text(ui.values[1]+type)
@@ -220,7 +253,7 @@ window.travelsJs =
     max_value = $(max).val()
     min_value = min_slider if (min_value == "")
     max_value = max_slider if (max_value == "")
-    tooltip1 = $('<div id="tooltip_left" class="tooltip" />').text("9h0")
+    tooltip1 = $('<div id="tooltip_left" class="tooltip" />').text("09h00")
     tooltip2 = $('<div id="tooltip_right" class="tooltip" />').text("20h30")
     $(slider_id).slider {
       range: true,
@@ -229,16 +262,19 @@ window.travelsJs =
       step: 15,
       values: [min_value, max_value],
       slide: (event, ui) ->
-        hours1 = Math.floor((ui.values[0] / 60))
-        minutes1 = (ui.values[0] - (hours1 * 60))
-        hours1 = '0' + hours1 if(hours1.length == 1)
-        minutes1 = '0' + minutes1 if(minutes1.length == 1)
+        if ((ui.values[0]+120) >= ui.values[1])
+          return false
+        hours1 = Math.floor((ui.values[0] / 60)).toString()
+        minutes1 = (ui.values[0] - (hours1 * 60)).toString()
+        hours1 = '0' + hours1 if hours1.length == 1
+        minutes1 = '0' + minutes1 if minutes1.length == 1
         time1 = hours1+"h"+minutes1
-        hours2 = Math.floor((ui.values[1] / 60))
-        minutes2 = (ui.values[1] - (hours2 * 60))
+        hours2 = Math.floor((ui.values[1] / 60)).toString()
+        minutes2 = (ui.values[1] - (hours2 * 60)).toString()
         hours2 = '0' + hours if(hours1.length == 1)
         minutes2 = '0' + minutes if(minutes2.length == 1)
         time2 = hours2+"h"+minutes2
+        time2 = "00h00" if time2 == "24h0"
         tooltip1.text(time1)
         tooltip2.text(time2)
         $(min).val(parseFloat(hours1+"."+minutes1))

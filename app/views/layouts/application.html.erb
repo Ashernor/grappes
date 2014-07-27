@@ -48,10 +48,10 @@
       <% end %>
     </span>
     <span class="date_pickers">
-        Aller et retour
+        <span>Aller <span>Retour</span></span>
         <%= form_tag '', :method => :get do %>
           <%= datetime_field_tag :min_date, params[:min_date], class:"datepicker", placeholder: "Date de départ" %>
-          <%= datetime_field_tag :max_date, params[:max_date], class:"datepicker", placeholder: "Date de fin" %>
+          <%= datetime_field_tag :max_date, params[:max_date], class:"datepicker", placeholder: "Date de retour" %>
     <% end %>
     </span>
     <span class="price_range">
@@ -65,7 +65,7 @@
     <span class="nb_people">
       Amis
           <%= form_tag '', :method => :get do %>
-          <%= number_field_tag :nb_people, params[:nb_people], value: 1 %>
+          <%= text_field_tag :nb_people, params[:nb_people], value: 1, min: 1 %>
       <% end %>
     </span>
   </div>

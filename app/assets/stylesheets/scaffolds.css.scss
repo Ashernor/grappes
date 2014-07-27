@@ -97,7 +97,7 @@ p, h1, h2, h3, h4, h5, h6, a {
 }
 
 .loading.radio_button {
-  content: image-url('radio_checked.png');
+  content: image-url('radio_checked-clean.png');
 }
 
 #foo:checked::before,
@@ -116,7 +116,7 @@ input[type="radio"] + label::before {
 }
 
 input[type="radio"]:checked + label::before {
-  content: image-url('radio_checked.png');
+  content: image-url('radio_checked-clean.png');
   padding: 0 3px;
   position: relative;
   top: 3px;
@@ -127,7 +127,7 @@ input[type="radio"]:checked + label::before {
 .navbar {
   height: 66px;
   width: 100%;
-  background: #f6ae10;
+  background: #f2ae32;
   overflow: hidden;
 
   h1 {
@@ -163,12 +163,12 @@ input[type="radio"]:checked + label::before {
 }
 
 .ui-autocomplete {
-  background: #ffaf00;
+  background: #f2ae32;
   z-index: 9999;
 
   li {
     &:hover, &.active {
-      background: #f5a600;
+      background: #f2ae32;
       color: #fff;
       border: none;
 
@@ -179,7 +179,7 @@ input[type="radio"]:checked + label::before {
       border: none;
 
       &:hover, &.active{
-        background: #f5a600;
+        background: #f2ae32;
         color: #fff;
         border: none;
       }
@@ -188,21 +188,29 @@ input[type="radio"]:checked + label::before {
 }
 
 .ui-menu .ui-menu-item a {
-  background: #f5a600 !important;
+  background: #f2ae32 !important;
   color: #fff;
   border: none !important;
   border-radius: 2px !important;
   font-size: 0.8em !important;
 }
 
+.ui-datepicker table {
+  margin: 0;
+}
+
+.datepicker {
+  cursor: pointer;
+}
+
 .ui-datepicker {
   width: 140px;
-  background: #ffbd00;
+  background: #f2ae32;
   border: none;
   padding: 0;
 
   .ui-datepicker-header {
-    background: #ffaf00;
+    background: #f2ae32;
     border-radius: 0;
     border: none;
     padding: 0;
@@ -240,7 +248,7 @@ input[type="radio"]:checked + label::before {
   }
 
   thead {
-    background: #ffaf00;
+    background: #f2ae32;
 
     th {
       padding: 3px 0;
@@ -251,20 +259,23 @@ input[type="radio"]:checked + label::before {
   }
 
   tbody {
+    background: #ffbd00;
+
     td {
       border: none;
       padding: 0 !important;
       width: 15px !important;
       border: none;
 
-      a {
-        padding: 5px 3px 5px 0 !important;
+      a, .ui-state-default {
+        padding: 5px 2px 5px 2px !important;
         width: 15px !important;
         background: none !important;
         border: none !important;
         color: #fff !important;
         font-weight: 200 !important;
         font-size: 0.8em;
+        text-align: center;
 
         &.ui-state-active, &:hover {
           background: #2a5668 !important;
@@ -312,6 +323,10 @@ input[type="radio"]:checked + label::before {
       font-weight: 300;
       font-size: 0.85em;
 
+      span span {
+        margin-left: 118px;
+      }
+
       input {
         background: white image-url('fleche_bas.png') no-repeat right 8px;
         width: 130px;
@@ -324,9 +339,48 @@ input[type="radio"]:checked + label::before {
       color: #fff;
       font-weight: 300;
       font-size: 0.85em;
+      margin-top: -5px;
 
       input {
         width: 30px;
+        background: #fff;
+      }
+
+      .ui-spinner {
+        margin-top: 1px;
+        background: none;
+        border: none;
+        margin-left: -6px;
+      }
+
+      .ui-spinner-input {
+        padding: 8px 0;
+        text-align: center;
+      }
+
+      .ui-spinner .ui-icon {
+        margin-top: -9px;
+      }
+
+      .ui-spinner-up {
+        background: none;
+        border: none;
+
+        &>span {
+          span {
+            background: image-url('spinner_top.png') no-repeat;
+          }
+        }
+      }
+      .ui-spinner-down {
+        background: none;
+        border: none;
+
+        &>span {
+          span {
+            background: image-url('spinner_bottom.png') no-repeat;
+          }
+        }
       }
     }
 
@@ -364,7 +418,37 @@ input[type="radio"]:checked + label::before {
     color: #000;
     position: absolute;
     top: -20px;
-    left: -10px;
+    left: -12px;
+    width: 30px;
+    text-align: center;
+
+    &:after, &:before {
+      top: 100%;
+      left: 50%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+    }
+
+    &:after {
+      border-color: rgba(0, 0, 0, 0);
+      border-top-color: rgba(255, 255, 255, 0.7);
+      border-width: 5px;
+      margin-left: -5px;
+    }
+
+    &:before {
+      border-color: rgba(255, 255, 255, 0);
+      border-width: 14px;
+      margin-left: -14px;
+    }
+
+    &:last-of-type {
+      margin-left: -5px;
+    }
   }
 
   .ui-slider-range {
@@ -429,7 +513,7 @@ input[type="radio"]:checked + label::before {
   display: block;
   left: -200px;
   padding-top: 75px;
-  border-bottom: 6px solid #f6ae10;
+  border-bottom: 6px solid #f2ae32;
   box-shadow: inset 0 -7px 8px -8px #696868;
 
   h2 {
@@ -496,6 +580,7 @@ input[type="radio"]:checked + label::before {
     margin-right: 0;
     border-bottom: 3px solid #fff;
     position: relative;
+    overflow: hidden;
 
     .left_shadow {
       width: 15px;
@@ -518,9 +603,9 @@ input[type="radio"]:checked + label::before {
   }
 
   .ui-icon.iconOpen {
-    background: image-url('arrow-left.png') no-repeat 0 3px;
+    background: image-url('arrow-left.png') no-repeat -2px 5px;
     padding-top: 3px;
-    width: 8px;
+    width: 11px;
     height: 13px;
 
   }
@@ -604,7 +689,7 @@ input[type="radio"]:checked + label::before {
   display: block;
   right: -360px;
   padding-top: 80px;
-  border-bottom: 6px solid #f6ae10;
+  border-bottom: 6px solid #f2ae32;
   overflow-y: scroll;
   box-shadow: inset 0 -7px 8px -8px #696868;
 
@@ -720,7 +805,7 @@ input[type="radio"]:checked + label::before {
   min-width: 1000px;
   width: 100%;
   height: 580px;
-  border-bottom: 6px solid #f6ae10;
+  border-bottom: 6px solid #f2ae32;
 
   .count-icon {
     background: #2a5668;
@@ -789,7 +874,7 @@ input[type="radio"]:checked + label::before {
     overflow: hidden;
 
     .bottom {
-      background: #ffae00 image-url('popup_bottom_bg.png') 10px center no-repeat;
+      background: #f2ae32 image-url('popup_bottom_bg.png') 10px center no-repeat;
       height: 40px;
       width: 100%;
       float: left;
@@ -1017,7 +1102,7 @@ input[type="radio"]:checked + label::before {
       text-align: center;
       font-size: 1.2em;
       bottom: 0px;
-      color: #ffaf00;
+      color: #f2ae32;
       width: 285px;
 
       a {
@@ -1037,7 +1122,7 @@ input[type="radio"]:checked + label::before {
       color: #fff;
       font-size: 1.4em;
       padding: 5px 35px;
-      background: #ffaf00 image-url('pin_wrapper.png') no-repeat 8px 3px;
+      background: #f2ae32 image-url('pin_wrapper.png') no-repeat 8px 3px;
       font-weight: 500;
       margin: 0;
 
@@ -1064,7 +1149,7 @@ input[type="radio"]:checked + label::before {
   }
 
   .first {
-    background: #ffaf00;
+    background: #f2ae32;
     padding: 0;
 
     p {

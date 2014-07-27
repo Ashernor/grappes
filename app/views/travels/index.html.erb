@@ -34,9 +34,9 @@
     <div>
       <span class="left_shadow"></span>
       <%= form_tag('', :method => :get) do %>
-        <p><%= radio_button_tag :stopover, 0 %> <label for="stopover_0">0 escales</label></p>
-        <p><%= radio_button_tag :stopover, 1 %> <label for="stopover_1">1 escales</label></p>
-        <p><%= radio_button_tag :stopover, 2 %> <label for="stopover_2">2 escales</label></p>
+        <p><%= radio_button_tag :stopover, 0 %> <label for="stopover_0">Vol direct</label></p>
+        <p><%= radio_button_tag :stopover, 1 %> <label for="stopover_1">1 escale</label></p>
+        <p><%= radio_button_tag :stopover, 2 %> <label for="stopover_2">2+ escales</label></p>
       <% end %>
     </div>
     <h3 class="companies">Compagnies</h3>
@@ -74,7 +74,7 @@
   <div class="shadow_right"></div>
   <div id="loader">
       <ul id="travel_list" data-cities="<%= @citys %>">
-        <% @travels.each_with_index do |travel, i| %>
+        <% @travels.try(:each_with_index) do |travel, i| %>
           <li data-color="color<%= i %>" data-coordinates="<%= travel.coordinates %>" data-company="<%= travel.company %>" data-content="<%= travel.about %>" data-starttime="<%= travel.start_time %>" data-endtime="<%= travel.end_time %>">
             <div>
                 <h3 class="city" data-endcity="<%= travel.end_city %>" data-endairport="<%= travel.end_airport_code %>" data-startcity="<%= travel.start_city %>" data-startairport="<%= travel.start_airport_code %>"><%= travel.end_city %> <span>(<%= travel.end_airport_code %>)</span></h3>
