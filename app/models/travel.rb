@@ -62,8 +62,8 @@ class Travel
   # Only return the travel between a date range
   scope :between_dates, lambda { |start_date, end_date|
     all_of(
-      {:departure => {'$gte' => Date.strptime(start_date,"%m/%d/%Y").to_datetime }},
-      {:arrival => {'$lte' => Date.strptime(end_date,"%m/%d/%Y").to_datetime }}
+      {:departure => {'$gte' => Date.strptime(start_date,"%d/%m/%Y").to_datetime }},
+      {:arrival => {'$lte' => Date.strptime(end_date,"%d/%m/%Y").to_datetime }}
     )
   }
 
