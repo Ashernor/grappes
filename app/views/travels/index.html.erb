@@ -48,12 +48,12 @@
           <% end %>
       <% end %>
     </div>
-    <h3 class="country">Pays</h3>
+    <h3 class="country">Pays à exclure</h3>
     <div>
       <span class="left_shadow"></span>
-      <%= form_tag('', :method => :get) do %>
+      <%= form_tag('', :method => :get, class: 'no_s exclude') do %>
           <% @end_countries.each_with_index do |country, index| %>
-          <p><%= radio_button_tag :country, index %> <label for="country<%= index %>"><%= country %></label></p>
+          <p><%= check_box_tag "countries[]", country, nil, :id => "country_#{country}" %> <label for="country_<%= country %>"><%= country %></label></p>
           <% end %>
       <% end %>
     </div>

@@ -95,6 +95,10 @@ class Travel
     where(:stopover => {:$lte => nb_of_stopover.to_i})
   }
 
+  scope :not_in_countries, lambda { |countries|
+    not_in(:end_country => countries)
+  }
+
   # TODO : WE MUST SEARCH IN ARRAY !!!!!!!
   scope :with_companies, lambda { |companies|
     any_of({ :company => /.*#{companies}.*/ })

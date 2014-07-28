@@ -65,7 +65,7 @@
     <span class="nb_people">
       Amis
           <%= form_tag '', :method => :get do %>
-          <%= text_field_tag :nb_people, params[:nb_people], value: 1, min: 1 %>
+          <%= text_field_tag :nb_people, params[:nb_people], value: 1, min: 1, disabled: true %>
       <% end %>
     </span>
   </div>

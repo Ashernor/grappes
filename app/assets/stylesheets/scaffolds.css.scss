@@ -101,21 +101,21 @@ p, h1, h2, h3, h4, h5, h6, a {
 }
 
 #foo:checked::before,
-input[type="radio"] {
+input[type="radio"], input[type="checkbox"] {
   position:absolute;
   clip: rect(0,0,0,0);
   clip: rect(0 0 0 0);
 }
 
 #foo:checked,
-input[type="radio"] + label::before {
+input[type="radio"] + label::before, input[type="checkbox"] + label::before {
   content: image-url('radio_not.png');
   padding: 0 3px;
   position: relative;
   top: 3px;
 }
 
-input[type="radio"]:checked + label::before {
+input[type="radio"]:checked + label::before, input[type="checkbox"]:checked + label::before {
   content: image-url('radio_checked-clean.png');
   padding: 0 3px;
   position: relative;
@@ -199,7 +199,7 @@ input[type="radio"]:checked + label::before {
   margin: 0;
 }
 
-.datepicker {
+.datepicker, .ui-spinner-button {
   cursor: pointer;
 }
 
@@ -307,7 +307,7 @@ input[type="radio"]:checked + label::before {
     }
 
     .city_search {
-      background: image-url('picto_pin.png') no-repeat left 6px;
+      background: image-url('picto_pin.png') no-repeat left 2px;
       color: #fff;
       font-weight: 300;
       font-size: 0.85em;
@@ -318,13 +318,17 @@ input[type="radio"]:checked + label::before {
     }
 
     .date_pickers {
-      background: image-url('picto_calendrier.png') no-repeat left 10px;
+      background: image-url('picto_calendrier.png') no-repeat left 7px;
       color: #fff;
       font-weight: 300;
       font-size: 0.85em;
 
-      span span {
-        margin-left: 118px;
+      span {
+        margin-left: 5px;
+
+        span {
+          margin-left: 112px;
+        }
       }
 
       input {
@@ -335,7 +339,7 @@ input[type="radio"]:checked + label::before {
     }
 
     .nb_people {
-      background: image-url('picto_people.png') no-repeat left 14px;
+      background: image-url('picto_people.png') no-repeat left 16px;
       color: #fff;
       font-weight: 300;
       font-size: 0.85em;
@@ -385,7 +389,7 @@ input[type="radio"]:checked + label::before {
     }
 
     .price_range {
-      background: image-url('picto_budget.png') no-repeat left 11px;
+      background: image-url('picto_budget.png') no-repeat left 7px;
       margin-top: -5px;
       width: 160px;
       color: #fff;
@@ -816,7 +820,7 @@ input[type="radio"]:checked + label::before {
     border-radius: 15px;
     font-size: 1.1em;
     padding: 5px;
-    width: 65px !important;
+    width: 70px !important;
     line-height: 0.85;
     height: 30px !important;
     font-family: 'Exo 2', sans-serif;
@@ -849,7 +853,12 @@ input[type="radio"]:checked + label::before {
 
     &:nth-of-type(1) {
       background: #333;
+
+      &:after {
+        border-top-color: #333;
+      }
     }
+
     &:nth-of-type(2) {
       background: #888;
     }

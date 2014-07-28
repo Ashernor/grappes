@@ -15,14 +15,14 @@ class TravelsController < ApplicationController
     #between start time and end_time
     @travels = @travels.within_start_time(params[:min_start_time], params[:max_start_time]) if params[:min_start_time].present?
     @travels = @travels.within_end_time(params[:min_end_time], params[:max_end_time]) if params[:min_end_time].present?
-
     @travels = @travels.order_by(:price => :asc).limit(50) if @travels
+    @travels = @travels.not_in_countries( params[:countries]) if params[:countries]
 
     @citys = Travel.all.map(&:start_city).uniq
     @front_travels = Travel.prefered("ok").empty? ? Travel.all : Travel.prefered("ok")
     @companies = Travel.all.pluck(:company).uniq
     @moods = Mood.all
-    @end_countries = Travel.all.pluck(:end_country).uniq
+    @end_countries = Travel.all.pluck(:end_country).uniq.sort_by!{ |e| e.downcase }.delete_if(&:empty?)
 
   end
 

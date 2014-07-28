@@ -5,6 +5,29 @@
 window.travelsJs =
   init: ->
     parent = this
+
+    getJson = (url) ->
+      $.getJSON "#{url}"
+
+    #geolocation
+    maPosition= (position) ->
+      pos = []
+      pos.push position.coords.latitude
+      pos.push position.coords.longitude
+      getJson("https://maps.googleapis.com/maps/api/geocode/json?latlng=#{pos[0]},#{pos[1]}").done (e) ->
+        results = e.results[0]
+        city = ""
+        for i in [0..results.address_components.length]
+          ac = results.address_components[i]
+          if ac
+            city = ac.long_name if(ac.types.indexOf("locality") >= 0)
+        $("#from").val(city).change()
+    noPosition = () ->
+      $("#from").attr("placeholder","Ville de départ")
+
+    if(navigator.geolocation)
+      navigator.geolocation.getCurrentPosition(maPosition, noPosition)
+
     options =
       dateFormat: 'dd/mm/yy',
       monthNames:['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
@@ -25,11 +48,6 @@ window.travelsJs =
       source: availableTags
     }
 
-    $(".city_search form input").keydown ->
-      content = $(this).val().length
-      #if (content > 3)
-        #$('.city_search form').submit();
-
     # submit when modif finished
     # Price range
     min_budget = $("#min_budget").val()
@@ -44,7 +62,7 @@ window.travelsJs =
       max: 500,
       values: [min_budget, max_budget],
       slide: (event, ui) ->
-        if ((ui.values[0]+50) >= ui.values[1])
+        if ((ui.values[0]+140) >= ui.values[1])
           return false
         $("#min_budget").val(ui.values[0])
         $("#max_budget").val(ui.values[1])
@@ -71,7 +89,7 @@ window.travelsJs =
       max: 10,
       values: [min_travel_time, max_travel_time],
       slide: (event, ui) ->
-        if (ui.values[0] == ui.values[1])
+        if (ui.values[0]+2 >= ui.values[1])
           return false
         $("#min_travel_time").val(ui.values[0])
         $("#max_travel_time").val(ui.values[1])
@@ -104,6 +122,10 @@ window.travelsJs =
     $("#nb_people").spinner {
       stop: ->
         parent.changeFromBackground()
+        if parseInt( $("#nb_people").val()) > 1
+          $(".price_range span").text("Budget par personne")
+        else
+          $(".price_range span").text("Budget")
     }
 
     $("#left_button").click ->
@@ -171,10 +193,6 @@ window.travelsJs =
       parent.changeFromBackground()
       $(this).parent().addClass("modified") if $(this).parent().attr("method") == "get"
       $(this).parent().parent().addClass("modified") if $(this).parent().parent().attr("method") == "get"
-      if parseInt( $("#nb_people").val()) > 1
-        $(".price_range span").text("Budget par personne")
-      else
-        $(".price_range span").text("Budget")
       if $(this).hasClass("autocomplete")
         get_json("https://maps.googleapis.com/maps/api/geocode/json?address=#{$(this).val()}").done (e) ->
           json = e.results[0].geometry.location
@@ -192,7 +210,7 @@ window.travelsJs =
       return false;
 
     $("#reset_filter").click (e) ->
-      $(".modified input").val("")
+      $(".modified input").not(".datepicker, #max_budget, #min_budget, #from").val("").attr('checked', false)
       loadParams()
       # Reset sliders
       resetSlider(".travel_time", 2, 6, "2h", "6h")
@@ -206,7 +224,6 @@ window.travelsJs =
       $("#{element} .ui-slider").slider('values',1, max_val)
       $("#{element} #tooltip_left").text(min)
       $("#{element} #tooltip_right").text(max)
-
 
     loadParams= ->
       params = "/?"+$(".modified").serialize().replace(/\utf8=%E2%9C%93&/g,"")+" #travel_list"
@@ -223,8 +240,10 @@ window.travelsJs =
   changeFromBackground: ->
     if $("#from").val() == ""
       $("#from").css("background","red")
+      $("#from").attr("placeholder", "Renseigne ta ville de départ")
     else
       $("#from").css("background","#fff")
+      $("#from").attr("placeholder", "")
 
   createCustomSlider: (slider_id, min, max, min_slider, max_slider, parent, type) ->
     min_value = $(min).val()
