@@ -39,12 +39,15 @@
         <p><%= radio_button_tag :stopover, 2 %> <label for="stopover_2">2+ escales</label></p>
       <% end %>
     </div>
-    <h3 class="companies">Compagnies</h3>
+    <h3 class="companies">Compagnies à exclure</h3>
     <div>
       <span class="left_shadow"></span>
       <%= form_tag('', :method => :get) do %>
           <% @companies.each_with_index do |company, index| %>
-              <p><%= radio_button_tag :company, company %> <label for="company_<%= company %>"><%= company%></label></p>
+              <p>
+                <%= check_box_tag "companies[]", company, nil, :id => "company_#{company}" %>
+                <label for="company_<%= company %>"><%= company%></label>
+              </p>
           <% end %>
       <% end %>
     </div>

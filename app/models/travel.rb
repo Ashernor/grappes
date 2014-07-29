@@ -99,11 +99,9 @@ class Travel
     not_in(:end_country => countries)
   }
 
-  # TODO : WE MUST SEARCH IN ARRAY !!!!!!!
-  scope :with_companies, lambda { |companies|
-    any_of({ :company => /.*#{companies}.*/ })
+  scope :not_in_companies, lambda { |companies|
+    not_in(:company => companies)
   }
-  # SAME WITH COUNTRIES BECAUSE WE CAN SELECT SEVERAL COUNTRIES
 
   # Import method
   def self.import(file)

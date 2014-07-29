@@ -11,12 +11,12 @@ class TravelsController < ApplicationController
     @travels = @travels.with_people(params[:nb_people]) if params[:nb_people].present?
     @travels = @travels.within_duration(params[:min_travel_time], params[:max_travel_time]) if params[:min_travel_time].present?
     @travels = @travels.number_of_stopover(params[:stopover]) if params[:stopover].present?
-    @travels = @travels.with_companies(params[:company]) if params[:company].present?
     #between start time and end_time
     @travels = @travels.within_start_time(params[:min_start_time], params[:max_start_time]) if params[:min_start_time].present?
     @travels = @travels.within_end_time(params[:min_end_time], params[:max_end_time]) if params[:min_end_time].present?
     @travels = @travels.order_by(:price => :asc).limit(50) if @travels
     @travels = @travels.not_in_countries( params[:countries]) if params[:countries]
+    @travels = @travels.not_in_companies(params[:companies]) if params[:companies].present?
 
     @citys = Travel.all.map(&:start_city).uniq
     @front_travels = Travel.prefered("ok").empty? ? Travel.all : Travel.prefered("ok")
