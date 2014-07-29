@@ -340,8 +340,8 @@ window.travelsJs =
             "start_departure_time": start_departure_time,
             "start_arrival_time": start_arrival_time,
             "divIcon": {
-              "iconSize": [50, 50],
-              "iconAnchor": [25, 25],
+              "iconSize": [70, 30],
+              "iconAnchor": [33, 38],
               "className": "count-icon "+color,
               "html": price
             }
