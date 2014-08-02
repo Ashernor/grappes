@@ -6,6 +6,7 @@ class Travel
   include Mongoid::Document
   include Mongoid::Timestamps
   include Mongoid::Paperclip
+  include Mongoid::Attributes::Dynamic
 
   field :start_city, type: String
   field :end_city, type: String
@@ -30,6 +31,7 @@ class Travel
   field :start_time, type: Float
   field :end_time, type: Float
   field :duration, type: Integer
+
   geocoded_by :end_city               # can also be an IP address
 
   # MongoDB Associations
@@ -105,8 +107,10 @@ class Travel
 
   # Import method
   def self.import(file)
-    CSV.foreach(file.path, headers: true) do |row|
-      Travel.create! row.to_hash
+    SmarterCSV.process(file.path) do |array|
+      # we're passing a block in, to process each resulting hash / =row (the block takes array of hashes)
+      # when chunking is not enabled, there is only one hash in each array
+      Travel.create( array.first )
     end
   end
 
@@ -124,10 +128,10 @@ class Travel
   end
 
   def set_start_time
-    self.start_time = self.departure.strftime("%H.%M").to_f
+    self.start_time = self.departure.strftime("%H.%M").to_f unless self.start_time.nil?
   end
 
   def set_end_time
-    self.end_time = self.arrival.strftime("%H.%M").to_f
+    self.end_time = self.arrival.strftime("%H.%M").to_f unless self.end_time.nil?
   end
 end

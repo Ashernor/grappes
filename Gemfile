@@ -5,7 +5,7 @@ ruby '2.0.0'
 
 gem 'rails', '4.0.3'
 
-gem "mongoid", "~> 4.0.0.beta1"
+gem "mongoid", "~> 4.0.0"
 gem 'mongoid-versioning', github: 'simi/mongoid-versioning'
 gem 'rails_admin', "~> 0.6.2"
 gem "omniauth-google-apps", "~> 0.1.0"
@@ -31,6 +31,7 @@ gem 'jquery-ui-rails', "~> 4.2.0"
 gem 'mapbox-rails', '~> 1.6.1.1'
 gem "geocoder"
 gem "mongoid-paperclip", :require => "mongoid_paperclip"
+gem 'smarter_csv'
 
 group :development, :test do
   gem 'debugger'
