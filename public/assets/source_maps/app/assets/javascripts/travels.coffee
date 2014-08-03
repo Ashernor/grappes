@@ -154,7 +154,10 @@ window.travelsJs =
 
   geoMap: ->
     parent = this
-    map = L.mapbox.map('map', 'examples.h186knp8', { zoomControl:false }).setView([48.32, 2.5], 5)
+    map = L.mapbox.map('map', 'examples.h186knp8', { zoomControl: false }).setView([48.32, 2.5], 5)
+    map.touchZoom.disable();
+    map.scrollWheelZoom.disable();
+    new L.Control.Zoom({ position: 'bottomright' }).addTo(map);
 
     myLayer = L.mapbox.featureLayer().addTo(map)
 
