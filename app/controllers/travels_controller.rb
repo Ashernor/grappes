@@ -3,10 +3,13 @@ class TravelsController < ApplicationController
 
   # GET /travels
   def index
+    store_search_params_in_cache(params)
+    retrieve_search_params_from_cookies
+
     @travels = params.size == 2 ? nil : Travel.all
 
     @travels = @travels.from(params[:from]) if params[:from].present?
-    @travels = @travels.in_budget(params[:min_budget], params[:max_budget]) if params[:min_budget].present?
+    @travels = @travels.in_budget(params[:min_budget], params[:max_budget]) if (params[:min_budget].present? && params[:max_budget].present?)
     @travels = @travels.between_dates(params[:min_date], params[:max_date]) if params[:min_date].present? && params[:max_date].present?
     @travels = @travels.with_people(params[:nb_people]) if params[:nb_people].present?
     @travels = @travels.within_duration(params[:min_travel_time], params[:max_travel_time]) if params[:min_travel_time].present?
@@ -79,5 +82,23 @@ class TravelsController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def travel_params
       params.require(:travel).permit(:start_city, :end_city, :price, :places_available, :about, :departure_time, :arrival_time, :direct_trip, :company, :lowcost, :type, :start_airport, :end_airport)
+    end
+
+    def store_search_params_in_cache(params)
+      cookies[:from] = { :value => params[:from], :expires => Time.now + 2592000} if params[:from].present?
+
+      cookies[:min_budget] = { :value => params[:min_budget], :expires => Time.now + 2592000} if params[:min_budget].present?
+      cookies[:max_budget] = { :value => params[:max_budget], :expires => Time.now + 2592000} if params[:max_budget].present?
+
+      cookies[:min_date] = { :value => params[:min_date], :expires => Time.now + 2592000} if params[:min_date].present?
+      cookies[:max_date] = { :value => params[:max_date], :expires => Time.now + 2592000} if params[:max_date].present?
+    end
+
+    def retrieve_search_params_from_cookies
+      params[:from] = cookies[:from] if cookies[:from]
+      params[:min_budget] = cookies[:min_budget] unless cookies[:min_budget].blank?
+      params[:max_budget] = cookies[:max_budget] unless cookies[:max_budget].blank?
+      params[:min_date] = cookies[:min_date] unless cookies[:min_date].blank?
+      params[:max_date] = cookies[:max_date] unless cookies[:max_date].blank?
     end
 end
