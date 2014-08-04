@@ -192,6 +192,8 @@ window.travelsJs =
       $.marker.addTo(map);
       $("img.leaflet-marker-icon").attr("src","/picto_pin.png").css("width","auto").css("margin-left","-15px").css("margin-top","-37px")
 
+    $("#from").bind "propertychange keyup input paste", ->
+      parent.changeFromBackground()
 
     $("form input").change ->
       parent.changeFromBackground()
