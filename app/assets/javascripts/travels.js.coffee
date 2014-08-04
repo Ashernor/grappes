@@ -234,6 +234,8 @@ window.travelsJs =
         geoJson = parent.parseContent()
         myLayer.setGeoJSON(geoJson)
       )
+      form_params = "/?"+$(".modified").serialize().replace(/\utf8=%E2%9C%93&/g,"")
+      $(".exclude").load(form_params+" .exclude")
 
     clickButton= (city) ->
       myLayer.eachLayer (marker) ->
