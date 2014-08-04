@@ -43,7 +43,7 @@
     <div>
       <span class="left_shadow"></span>
       <%= form_tag('', :method => :get) do %>
-          <% @companies.each_with_index do |company, index| %>
+          <% @companies.try(:each_with_index) do |company, index| %>
               <p>
                 <%= check_box_tag "companies[]", company, nil, :id => "company_#{company}" %>
                 <label for="company_<%= company %>"><%= company%></label>
@@ -55,7 +55,7 @@
     <div>
       <span class="left_shadow"></span>
       <%= form_tag('', :method => :get, class: 'no_s exclude') do %>
-          <% @end_countries.each_with_index do |country, index| %>
+          <% @end_countries.try(:each_with_index) do |country, index| %>
           <p><%= check_box_tag "countries[]", country, nil, :id => "country_#{country}" %> <label for="country_<%= country %>"><%= country %></label></p>
           <% end %>
       <% end %>
