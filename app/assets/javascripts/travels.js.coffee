@@ -218,8 +218,8 @@ window.travelsJs =
       # Reset sliders
       resetSlider(".travel_time", 2, 6, "2h", "6h")
       resetSlider(".price_range", 75, 300, "75€", "300€")
-      resetSlider(".within_time .start", 540, 1080, "9h0", "20h30")
-      resetSlider(".within_time .end", 540, 1080, "9h0", "20h30")
+      resetSlider(".within_time .start", 540, 1080, "09h00", "20h30")
+      resetSlider(".within_time .end", 540, 1080, "09h00", "20h30")
       e.preventDefault()
 
     resetSlider= (element, min_val, max_val, min, max) ->
@@ -295,8 +295,8 @@ window.travelsJs =
         time1 = hours1+"h"+minutes1
         hours2 = Math.floor((ui.values[1] / 60)).toString()
         minutes2 = (ui.values[1] - (hours2 * 60)).toString()
-        hours2 = '0' + hours if(hours1.length == 1)
-        minutes2 = '0' + minutes if(minutes2.length == 1)
+        hours2 = '0' + hours2 if(hours2.length == 1)
+        minutes2 = '0' + minutes2 if(minutes2.length == 1)
         time2 = hours2+"h"+minutes2
         time2 = "00h00" if time2 == "24h0"
         tooltip1.text(time1)
