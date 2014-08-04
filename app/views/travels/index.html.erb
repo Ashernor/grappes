@@ -78,6 +78,7 @@
   <div id="loader">
       <ul id="travel_list" data-cities="<%= @citys %>">
         <% @travels.try(:each_with_index) do |travel, i| %>
+          <% unless travel.coordinates.blank? %>
           <li data-color="color<%= i %>" data-coordinates="<%= travel.coordinates %>" data-company="<%= travel.company %>" data-content="<%= travel.about %>" data-starttime="<%= travel.start_time %>" data-endtime="<%= travel.end_time %>">
             <div>
                 <h3 class="city" data-endcity="<%= travel.end_city %>" data-endairport="<%= travel.end_airport_code %>" data-startcity="<%= travel.start_city %>" data-startairport="<%= travel.start_airport_code %>"><%= travel.end_city %> <span>(<%= travel.end_airport_code %>)</span></h3>
@@ -89,6 +90,7 @@
             </div>
             <a class="open_pin" href="#">En savoir +</a>
           </li>
+        <% end %>
         <% end %>
       </ul>
   </div>

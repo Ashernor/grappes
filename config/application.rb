@@ -17,7 +17,7 @@ module Grappes
   class Application < Rails::Application
 
     config.time_zone = 'Paris'
-    #config.i18n.default_locale = :fr
+    config.i18n.default_locale = :fr
 
     config.assets.enabled = true
     config.assets.initialize_on_precompile = false

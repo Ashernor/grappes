@@ -32,6 +32,7 @@ gem 'mapbox-rails', '~> 1.6.1.1'
 gem "geocoder"
 gem "mongoid-paperclip", :require => "mongoid_paperclip"
 gem 'smarter_csv'
+gem "airbrake"
 
 group :development, :test do
   gem 'debugger'
