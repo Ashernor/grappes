@@ -5,8 +5,9 @@ class TravelsController < ApplicationController
   def index
     store_search_params_in_cache(params)
     retrieve_search_params_from_cookies
+    @max_price = Travel.pluck(:price).max || 500
 
-    @travels = params.size == 2 ? nil : Travel.all
+    @travels = params.size == 2 ? nil : Travel.in_budget(0, @max_price)
 
     @travels = @travels.from(params[:from]) if params[:from].present?
     @travels = @travels.in_budget(params[:min_budget], params[:max_budget]) if (params[:min_budget].present? && params[:max_budget].present?)

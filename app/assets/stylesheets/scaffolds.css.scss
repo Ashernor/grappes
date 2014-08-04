@@ -311,7 +311,7 @@ input[type="radio"]:checked + label::before, input[type="checkbox"]:checked + la
     }
 
     .city_search {
-      background: image-url('picto_pin.png') no-repeat left 2px;
+      background: image-url('picto_pin.png') no-repeat left 4px;
       color: #fff;
       font-weight: 300;
       font-size: 0.85em;
@@ -322,7 +322,7 @@ input[type="radio"]:checked + label::before, input[type="checkbox"]:checked + la
     }
 
     .date_pickers {
-      background: image-url('picto_calendrier.png') no-repeat left 7px;
+      background: image-url('picto_calendrier.png') no-repeat left 8px;
       color: #fff;
       font-weight: 300;
       font-size: 0.85em;
@@ -343,11 +343,11 @@ input[type="radio"]:checked + label::before, input[type="checkbox"]:checked + la
     }
 
     .nb_people {
-      background: image-url('picto_people.png') no-repeat left 16px;
+      background: image-url('picto_people.png') no-repeat left 15px;
       color: #fff;
       font-weight: 300;
       font-size: 0.85em;
-      margin-top: -5px;
+      margin-top: -8px;
 
       input {
         width: 30px;
@@ -393,7 +393,7 @@ input[type="radio"]:checked + label::before, input[type="checkbox"]:checked + la
     }
 
     .price_range {
-      background: image-url('picto_budget.png') no-repeat left 7px;
+      background: image-url('picto_budget.png') no-repeat left 6px;
       margin-top: -5px;
       width: 160px;
       color: #fff;
@@ -406,7 +406,7 @@ input[type="radio"]:checked + label::before, input[type="checkbox"]:checked + la
       }
 
       form {
-        padding-top: 5px;
+        padding-top: 4px;
       }
 
       #slider-range {

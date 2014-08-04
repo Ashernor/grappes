@@ -54,7 +54,7 @@
           <%= datetime_field_tag :max_date, params[:max_date], class:"datepicker", placeholder: "Date de retour" %>
     <% end %>
     </span>
-    <span class="price_range">
+    <span class="price_range" data-max="<%= @max_price %>">
       <span>Budget</span> :
       <%= form_tag '', :method => :get do %>
           <%= hidden_field_tag :min_budget, params[:min_budget] %>
