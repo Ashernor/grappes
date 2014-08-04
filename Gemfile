@@ -48,7 +48,6 @@ group :test do
   gem 'mocha'
   gem "nokogiri"
   gem "capybara"
-  gem "tconsole"
   gem "database_cleaner", "~> 1.2.0"
   gem "tconsole"
 end
