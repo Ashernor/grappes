@@ -10,4 +10,19 @@ module ApplicationHelper
 
     raw(html)
   end
+
+  def stopover_text nb_stops
+    html = ""
+    case nb_stops
+      when 0
+        html = "Vol direct"
+      when 1
+        html = "1 escale"
+      when 2
+        html = "2+ escales"
+    end
+
+    html
+  end
+
 end

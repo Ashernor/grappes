@@ -41,7 +41,7 @@ window.travelsJs =
     availableTags = $("#travel_list").data("cities")
     $("#min_date").change ->
       val = $("#min_date").val().split('/')
-      date = new Date(val[1]+"-"+parseInt(val[0])+"-"+val[2])
+      date = new Date(val[1]+"/"+parseInt(val[0])+"/"+val[2])
       date.setDate(date.getDate()+1)
       $("#max_date").val($.datepicker.formatDate('dd/mm/yy', date))
     $(".autocomplete").autocomplete {
@@ -155,7 +155,11 @@ window.travelsJs =
 
   geoMap: ->
     parent = this
-    map = L.mapbox.map('map', 'examples.h186knp8', { zoomControl: false }).setView([48.32, 2.5], 5)
+    map = L.mapbox.map('map', 'examples.h186knp8', {
+      zoomControl: false,
+      maxZoom: 12,
+      minZoom: 3
+    }).setView([48.32, 2.5], 5)
     map.touchZoom.disable();
     map.scrollWheelZoom.disable();
     new L.Control.Zoom({ position: 'bottomright' }).addTo(map);
@@ -195,7 +199,7 @@ window.travelsJs =
     $("#from").bind "propertychange keyup input paste", ->
       parent.changeFromBackground()
 
-    $("form input").change ->
+    $(document).on 'change', 'form input', ->
       parent.changeFromBackground()
       $(this).parent().addClass("modified") if $(this).parent().attr("method") == "get"
       $(this).parent().parent().addClass("modified") if $(this).parent().parent().attr("method") == "get"
@@ -209,20 +213,25 @@ window.travelsJs =
       loadParams()
       e.preventDefault()
 
-    $("#sidebar_right li .open_pin").click ->
+    $(".open_pin").on 'click', (e) ->
       $("#right_button").click()
       title = $(this).parent().find(".city").data("city")
       clickButton(title)
-      return false;
+      e.preventDefault()
 
     $("#reset_filter").click (e) ->
       $(".modified input").not(".datepicker, #max_budget, #min_budget, #from").val("").attr('checked', false)
       loadParams()
       # Reset sliders
-      resetSlider(".travel_time", 2, 6, "2h", "6h")
-      resetSlider(".price_range", 75, 300, "75€", "300€")
-      resetSlider(".within_time .start", 540, 1080, "09h00", "20h30")
-      resetSlider(".within_time .end", 540, 1080, "09h00", "20h30")
+
+      min_duration = parseInt($(".travel_time").data("min"))
+      max_duration = parseInt($(".travel_time").data("max"))
+      resetSlider(".travel_time", min_duration, max_duration, "#{min_duration}h", "#{max_duration}h")
+
+      #we don't reset this slider
+      #resetSlider(".price_range", 75, 300, "75€", "300€")
+      resetSlider(".within_time .start", 540, 1280, "09h00", "20h30")
+      resetSlider(".within_time .end", 540, 1280, "09h00", "20h30")
       e.preventDefault()
 
     resetSlider= (element, min_val, max_val, min, max) ->
@@ -238,7 +247,9 @@ window.travelsJs =
         myLayer.setGeoJSON(geoJson)
       )
       form_params = "/?"+$(".modified").serialize().replace(/\utf8=%E2%9C%93&/g,"")
-      $(".exclude").load(form_params+" .exclude")
+      $(".exclude").load(form_params+" .exclude") unless $(".exclude").hasClass("modified")
+      $("form.companies").load(form_params+" form.companies") unless $("form.companies").hasClass("modified")
+      $("form.stopover_form").load(form_params+" form.stopover_form") unless $("form.stopover_form").hasClass("modified")
 
     clickButton= (city) ->
       myLayer.eachLayer (marker) ->

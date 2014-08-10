@@ -5,10 +5,15 @@ class TravelsController < ApplicationController
   def index
     store_search_params_in_cache(params)
     retrieve_search_params_from_cookies
+
+    #TODO : do a method for min and max
     @max_price = Travel.pluck(:price).max || 500
+    @min_duration = Travel.pluck(:duration).min || 0
+    @max_duration = Travel.pluck(:duration).max || 12
 
     @travels = params.size == 2 ? nil : Travel.in_budget(0, @max_price)
 
+    #TODO: do a method for search
     @travels = @travels.from(params[:from]) if params[:from].present?
     @travels = @travels.in_budget(params[:min_budget], params[:max_budget]) if (params[:min_budget].present? && params[:max_budget].present?)
     @travels = @travels.between_dates(params[:min_date], params[:max_date]) if params[:min_date].present? && params[:max_date].present?
@@ -22,11 +27,15 @@ class TravelsController < ApplicationController
     @travels = @travels.not_in_countries( params[:countries]) if params[:countries]
     @travels = @travels.not_in_companies(params[:companies]) if params[:companies].present?
 
+    # TODO : Do a method for search terms
     @citys = Travel.all.map(&:start_city).uniq
     @front_travels = Travel.prefered("ok").empty? ? Travel.all : Travel.prefered("ok")
     @companies = @travels.pluck(:company).uniq if @travels
     @moods = Mood.all
     @end_countries = @travels.pluck(:end_country).uniq.sort_by!{ |e| e.downcase }.delete_if(&:empty?) if @travels
+    @stopover = @travels.pluck(:stopover).uniq.sort_by!{ |e| e } if @travels
+
+    @cms = Cms.where(:language == "fr").last
 
   end
 

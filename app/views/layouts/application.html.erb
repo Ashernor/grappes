@@ -33,29 +33,29 @@
     <ul class="primary_navigation">
       <li><a href="#">L'actu du raisin</a></li>
       <li><a href="#">Qui sommes-nous ?</a></li>
-      <li><a href="#"><%= image_tag("picto_facebook.png") %></a></li>
-      <li><a href="#"><%= image_tag("picto_twitter.png") %></a></li>
-      <li><a href="#"><%= image_tag("picto_instagram.png") %></a></li>
+      <li><a target="_blank" href="http://facebook.com/grapyfr"><%= image_tag("picto_facebook.png") %></a></li>
+      <li><a target="_blank" href="http://twitter.com/grapy_fr"><%= image_tag("picto_twitter.png") %></a></li>
+      <li><a target="_blank" href="http://instagram.com/grapy_fr/"><%= image_tag("picto_instagram.png") %></a></li>
     </ul>
   </div>
 </div>
 <div class="searchbar">
   <div class="container">
     <span class="city_search">
-      Ville de départ :
+      <%= @cms.start_city %> :
       <%= form_tag '', :method => :get do %>
         <%= text_field_tag :from, params[:from], class: "autocomplete" %>
       <% end %>
     </span>
     <span class="date_pickers">
-        <span>Aller <span>Retour</span></span>
+        <span><%= raw @cms.two_way_trip2 %></span>
         <%= form_tag '', :method => :get do %>
           <%= datetime_field_tag :min_date, params[:min_date], class:"datepicker", placeholder: "Date de départ" %>
           <%= datetime_field_tag :max_date, params[:max_date], class:"datepicker", placeholder: "Date de retour" %>
     <% end %>
     </span>
     <span class="price_range" data-max="<%= @max_price %>">
-      <span>Budget</span> :
+      <span><%= @cms.budget %></span> :
       <%= form_tag '', :method => :get do %>
           <%= hidden_field_tag :min_budget, params[:min_budget] %>
           <%= hidden_field_tag :max_budget, params[:max_budget] %>
@@ -63,7 +63,7 @@
       <% end %>
     </span>
     <span class="nb_people">
-      Amis
+      <%= @cms.friends %>
           <%= form_tag '', :method => :get do %>
           <%= text_field_tag :nb_people, params[:nb_people], value: 1, min: 1, disabled: true %>
       <% end %>

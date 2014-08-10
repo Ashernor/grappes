@@ -63,9 +63,10 @@ class Travel
 
   # Only return the travel between a date range
   scope :between_dates, lambda { |start_date, end_date|
+    end_date =  Date.strptime(end_date,"%d/%m/%Y").to_datetime+1.day
     all_of(
       {:departure => {'$gte' => Date.strptime(start_date,"%d/%m/%Y").to_datetime }},
-      {:arrival => {'$lte' => Date.strptime(end_date,"%d/%m/%Y").to_datetime }}
+      {:arrival => {'$lte' => end_date }}
     )
   }
 
@@ -114,14 +115,12 @@ class Travel
     end
   end
 
-  private
-
   # The duration of a trip is the time difference between arrival and departure
   def set_duration
-    return 0 if departure.nil? || arrival.nil?
-
-    self.duration = ((Time.parse(arrival.to_s) - Time.parse(departure.to_s))/3600).round
+    self.duration = rand(0..12) if self.duration.nil?
   end
+
+  private
 
   def set_default_stopover
     self.stopover = 0 if self.stopover.nil?

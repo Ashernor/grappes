@@ -1,10 +1,10 @@
 <a href="#" id="left_button" data-direction="left"></a>
 <a href="#" id="right_button" data-direction="right"></a>
 <div id="sidebar_left">
-  <h2>Affinez votre recherche</h2>
+  <h2><%= @cms.title_sidebar_left %></h2>
   <div id="accordion">
-    <h3 class="length">Durée de vol</h3>
-    <div class="travel_time">
+    <h3 class="length"><%= @cms.travel_length %></h3>
+    <div class="travel_time" data-min="<%= @min_duration %>" data-max="<%= @min_duration %>">
       <span class="left_shadow"></span>
       <%= form_tag '', :method => :get do %>
             <%= hidden_field_tag :min_travel_time, params[:min_travel_time] %>
@@ -12,7 +12,7 @@
           <div class="range_with_tooltip" id="slider-range-travel"></div>
       <% end %>
     </div>
-    <h3 class="horaires">Horaires</h3>
+    <h3 class="horaires"><%= @cms.within_time %></h3>
     <div class="within_time">
       <span class="left_shadow"></span>
       <span class="start">
@@ -30,19 +30,19 @@
       <% end %>
       </span>
     </div>
-    <h3 class="stopover">Escales</h3>
+    <h3 class="stopover"><%= @cms.stopover %></h3>
     <div>
       <span class="left_shadow"></span>
-      <%= form_tag('', :method => :get) do %>
-        <p><%= radio_button_tag :stopover, 0 %> <label for="stopover_0">Vol direct</label></p>
-        <p><%= radio_button_tag :stopover, 1 %> <label for="stopover_1">1 escale</label></p>
-        <p><%= radio_button_tag :stopover, 2 %> <label for="stopover_2">2+ escales</label></p>
+      <%= form_tag('', :method => :get, class: "stopover_form") do %>
+        <% @stopover.try(:each) do |stopover| %>
+              <p><%= radio_button_tag :stopover, stopover %> <label for="stopover_<%= stopover %>"><%= stopover_text(stopover) %></label></p>
+        <% end %>
       <% end %>
     </div>
-    <h3 class="companies">Compagnies à exclure</h3>
+    <h3 class="companies"><%= @cms.excluded_companies %></h3>
     <div>
       <span class="left_shadow"></span>
-      <%= form_tag('', :method => :get) do %>
+      <%= form_tag('', :method => :get, class: "companies") do %>
           <% @companies.try(:each_with_index) do |company, index| %>
               <p>
                 <%= check_box_tag "companies[]", company, nil, :id => "company_#{company}" %>
@@ -51,7 +51,7 @@
           <% end %>
       <% end %>
     </div>
-    <h3 class="country">Pays à exclure</h3>
+    <h3 class="country"><%= @cms.excluded_countries %></h3>
     <div>
       <span class="left_shadow"></span>
       <%= form_tag('', :method => :get, class: 'no_s exclude') do %>
@@ -60,7 +60,7 @@
           <% end %>
       <% end %>
     </div>
-    <h3 class="mood">Humeur</h3>
+    <h3 class="mood"><%= @cms.moods %></h3>
     <div>
       <span class="left_shadow"></span>
       <%= form_tag('', :method => :get) do %>
@@ -70,7 +70,7 @@
       <% end %>
     </div>
   </div>
-  <a href="#" id="reset_filter"><%= image_tag('filter_reset.png') %>Réinitialiser les filtres</a>
+  <a href="#" id="reset_filter"><%= image_tag('filter_reset.png') %><%= @cms.reset_fields %></a>
   <span class="loading hidden radio_button"></span>
 </div>
 <div id="sidebar_right">
@@ -82,13 +82,13 @@
           <li data-color="color<%= i %>" data-coordinates="<%= travel.coordinates %>" data-company="<%= travel.company %>" data-content="<%= travel.about %>" data-starttime="<%= travel.start_time %>" data-endtime="<%= travel.end_time %>">
             <div>
                 <h3 class="city" data-endcity="<%= travel.end_city %>" data-endairport="<%= travel.end_airport_code %>" data-startcity="<%= travel.start_city %>" data-startairport="<%= travel.start_airport_code %>"><%= travel.end_city %> <span>(<%= travel.end_airport_code %>)</span></h3>
-                <span class="price">à partir de<br/>Aller retour
+                <span class="price"><%= @cms.from_price1 %>><br/><%= @cms.two_way_trip %>
                     <span><%= number_to_currency(travel.price, locale: :fr, precision: 0, format: "%n%u") %></span>
                 </span>
               <div class="start"><%= long_date_with_html(travel.departure) %><br/><%= travel.departure.strftime("%H") %>h<%= travel.departure.strftime("%M") %></div>
               <div class="end"><%= long_date_with_html(travel.arrival) %><br/><%= travel.arrival.strftime("%H") %>h<%= travel.arrival.strftime("%M") %></div>
             </div>
-            <a class="open_pin" href="#">En savoir +</a>
+            <a class="open_pin" href="#"><%= @cms.more %></a>
           </li>
         <% end %>
         <% end %>
@@ -102,8 +102,8 @@
       <div class="wrapper">
         <div class="bloc first fo">
           <%= image_tag("grapy_logo_bloc.png") %>
-          <p>Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum<br/><br/>Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum</p>
-          <h5 class="tag_line">Voyagez<br/>sans pépins !
+          <p><%= raw @cms.first_block_test %></p>
+          <h5 class="tag_line"><%= raw @cms.tag_line %>
           </h5>
           <a class="tag_click" href="#"><%= image_tag('go_blanc.jpg') %></a>
         </div>
@@ -116,7 +116,7 @@
             </div>
             <h5><%= @front_travels[0].title %></h5>
             <p><%= @front_travels[0].about %></p>
-            <p class="end_bloc">Vol à partir de <%= number_to_currency(@front_travels[0].price, locale: :fr, precision: 0, format: "%n%u") %> <a href="#"><%= image_tag("go_jaune.png") %></a> </p>
+            <p class="end_bloc"><%= @cms.from_price2 %> <%= number_to_currency(@front_travels[0].price, locale: :fr, precision: 0, format: "%n%u") %> <a href="#"><%= image_tag("go_jaune.png") %></a> </p>
           </div>
         </div>
         <div class="bloc ln">
@@ -132,7 +132,7 @@
             </div>
             <h5><%= @front_travels[0].title %></h5>
             <p><%= @front_travels[0].about %></p>
-            <p class="end_bloc">Vol à partir de <%= number_to_currency(@front_travels[0].price, locale: :fr, precision: 0, format: "%n%u") %> <a href="#"><%= image_tag("go_jaune.png") %></a> </p>
+            <p class="end_bloc"><%= @cms.from_price2 %> <%= number_to_currency(@front_travels[0].price, locale: :fr, precision: 0, format: "%n%u") %> <a href="#"><%= image_tag("go_jaune.png") %></a> </p>
           </div>
         </div>
         <div class="bloc">
@@ -144,7 +144,7 @@
             </div>
             <h5><%= @front_travels[0].title %></h5>
             <p><%= @front_travels[0].about %></p>
-            <p class="end_bloc">Vol à partir de <%= number_to_currency(@front_travels[0].price, locale: :fr, precision: 0, format: "%n%u") %> <a href="#"><%= image_tag("go_jaune.png") %></a> </p>
+            <p class="end_bloc"><%= @cms.from_price2 %> <%= number_to_currency(@front_travels[0].price, locale: :fr, precision: 0, format: "%n%u") %> <a href="#"><%= image_tag("go_jaune.png") %></a> </p>
           </div>
         </div>
         <div class="bloc ln">
