@@ -25,7 +25,7 @@ window.travelsJs =
     noPosition = () ->
       $("#from").attr("placeholder","Ville de départ")
 
-    if(navigator.geolocation)
+    if(navigator.geolocation && $("#from").val() == "")
       navigator.geolocation.getCurrentPosition(maPosition, noPosition)
 
     options =
@@ -213,9 +213,9 @@ window.travelsJs =
       loadParams()
       e.preventDefault()
 
-    $(".open_pin").on 'click', (e) ->
+    $(document).on 'click', '.open_pin', (e) ->
       $("#right_button").click()
-      title = $(this).parent().find(".city").data("city")
+      title = $(this).parent().find(".city").data("endcity")
       clickButton(title)
       e.preventDefault()
 
@@ -253,7 +253,7 @@ window.travelsJs =
 
     clickButton= (city) ->
       myLayer.eachLayer (marker) ->
-        if (marker.feature.properties.title == city)
+        if (marker.feature.properties.plain_end_city == city)
           marker.openPopup();
 
   changeFromBackground: ->
@@ -335,6 +335,7 @@ window.travelsJs =
         end_airport = $(".city", this).data("endairport")
         start_city = $(".city", this).data("startcity")+" <span>("+start_airport+")</span>"
         end_city = $(".city", this).data("endcity")+" <span>("+end_airport+")</span>"
+        plain_end_city = $(".city", this).data("endcity")
         price = $(".price span", this).text()
         start_date = $(".start", this).html().slice(0, - 9)
         end_date = $(".end", this).html().slice(0, - 9)
@@ -349,6 +350,7 @@ window.travelsJs =
             "start_city": start_city,
             "start_airport": start_airport,
             "end_city": end_city,
+            "plain_end_city": plain_end_city,
             "end_airport": end_airport,
             "title": end_city,
             "price": price,
