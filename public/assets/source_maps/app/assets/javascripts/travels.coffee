@@ -104,10 +104,12 @@ window.travelsJs =
     $(".travel_time .ui-slider-handle").eq(0).append(tooltip3)
     $(".travel_time .ui-slider-handle").eq(1).append(tooltip4)
 
+    min = parseInt($(".within_time").data("minhour"))*60
+    max = parseInt($(".within_time").data("maxhour"))*60
     #within_start_time
-    this.createCustomTimeSlider($("#slider-range-start"), $("#min_start_time"), $("#max_start_time"), 540, 1240, $(".within_time .start"), "h")
+    this.createCustomTimeSlider($("#slider-range-start"), $("#min_start_time"), $("#max_start_time"), min, max, $(".within_time .start"), "h")
     #within_end_time
-    this.createCustomTimeSlider($("#slider-range-end"), $("#min_end_time"), $("#max_end_time"), 540, 1240, $(".within_time .end"), "h")
+    this.createCustomTimeSlider($("#slider-range-end"), $("#min_end_time"), $("#max_end_time"), min, max, $(".within_time .end"), "h")
 
     $( "#accordion" ).accordion(
       icons: {
@@ -287,12 +289,25 @@ window.travelsJs =
     $(parent).find(".ui-slider-handle").eq(1).append(tooltip2)
 
   createCustomTimeSlider: (slider_id, min, max, min_slider, max_slider, parent, type) ->
+    hours1 = Math.floor((min_slider / 60)).toString()
+    minutes1 = (min_slider - (hours1 * 60)).toString()
+    hours1 = '0' + hours1 if hours1.length == 1
+    minutes1 = '0' + minutes1 if minutes1.length == 1
+    time1 = hours1+"h"+minutes1
+
+    hours2 = Math.floor((max_slider / 60)).toString()
+    minutes2 = (max_slider - (hours2 * 60)).toString()
+    hours2 = '0' + hours2 if(hours2.length == 1)
+    minutes2 = '0' + minutes2 if(minutes2.length == 1)
+    time2 = hours2+"h"+minutes2
+    time2 = "00h00" if time2 == "24h0"
+
     min_value = $(min).val()
     max_value = $(max).val()
     min_value = min_slider if (min_value == "")
     max_value = max_slider if (max_value == "")
-    tooltip1 = $('<div id="tooltip_left" class="tooltip" />').text("09h00")
-    tooltip2 = $('<div id="tooltip_right" class="tooltip" />').text("20h30")
+    tooltip1 = $('<div id="tooltip_left" class="tooltip" />').text(time1)
+    tooltip2 = $('<div id="tooltip_right" class="tooltip" />').text(time2)
     $(slider_id).slider {
       range: true,
       min: 0,

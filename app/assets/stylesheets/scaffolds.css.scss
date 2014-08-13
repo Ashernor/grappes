@@ -88,6 +88,10 @@ p, h1, h2, h3, h4, h5, h6, a {
 .color8 {z-index: 992 !important;}
 .color9 {z-index: 991 !important;}
 
+.ui-slider, .ui-slider-handle, label {
+  cursor: pointer;
+}
+
 .mapbox-info-toggle {
   display: none !important;
 }

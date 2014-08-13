@@ -35,6 +35,8 @@ class TravelsController < ApplicationController
     @end_countries = @travels.pluck(:end_country).uniq.sort_by!{ |e| e.downcase }.delete_if(&:empty?) if @travels
     @stopover = @travels.pluck(:stopover).uniq.sort_by!{ |e| e } if @travels
 
+    @minmax_hour = Travel.pluck(:departure).map{ |e| e.hour}.minmax
+
     @cms = Cms.where(:language == "fr").last
 
   end
