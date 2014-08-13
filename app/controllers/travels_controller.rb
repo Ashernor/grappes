@@ -26,16 +26,17 @@ class TravelsController < ApplicationController
     @travels = @travels.order_by(:price => :asc).limit(50) if @travels
     @travels = @travels.not_in_countries( params[:countries]) if params[:countries]
     @travels = @travels.not_in_companies(params[:companies]) if params[:companies].present?
+    @travels = @travels.with_mood(params[:mood]) if params[:mood].present?
 
     # TODO : Do a method for search terms
     @citys = Travel.all.map(&:start_city).uniq
     @front_travels = Travel.prefered("ok").empty? ? Travel.all : Travel.prefered("ok")
     @companies = @travels.pluck(:company).uniq if @travels
-    @moods = Mood.all
     @end_countries = @travels.pluck(:end_country).uniq.sort_by!{ |e| e.downcase }.delete_if(&:empty?) if @travels
     @stopover = @travels.pluck(:stopover).uniq.sort_by!{ |e| e } if @travels
 
     @minmax_hour = Travel.pluck(:departure).map{ |e| e.hour}.minmax
+    @moods = Mood.all.uniq
 
     @cms = Cms.where(:language == "fr").last
 

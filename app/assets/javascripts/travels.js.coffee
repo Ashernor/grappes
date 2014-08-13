@@ -107,7 +107,7 @@ window.travelsJs =
     min = parseInt($(".within_time").data("minhour"))*60
     max = parseInt($(".within_time").data("maxhour"))*60
     #within_start_time
-    this.($("#slider-range-start"), $("#min_start_time"), $("#max_start_time"), min, max, $(".within_time .start"), "h")
+    this.createCustomTimeSlider($("#slider-range-start"), $("#min_start_time"), $("#max_start_time"), min, max, $(".within_time .start"), "h")
     #within_end_time
     this.createCustomTimeSlider($("#slider-range-end"), $("#min_end_time"), $("#max_end_time"), min, max, $(".within_time .end"), "h")
 

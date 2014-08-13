@@ -65,7 +65,7 @@
       <span class="left_shadow"></span>
       <%= form_tag('', :method => :get) do %>
           <% @moods.each_with_index do |mood, index| %>
-              <p><%= radio_button_tag :mood, index %> <label for="mood_<%= index %>"><%= mood.title %></label></p>
+              <p><%= radio_button_tag :mood, mood.id %> <label for="mood_<%= mood.id %>"><%= image_tag mood.icon.url(:normal) %></label></p>
           <% end %>
       <% end %>
     </div>

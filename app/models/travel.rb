@@ -35,8 +35,7 @@ class Travel
   geocoded_by :end_city               # can also be an IP address
 
   # MongoDB Associations
-  embeds_many :moods
-  accepts_nested_attributes_for :moods
+  has_many :moods
 
   # Image upload with Paperclip & Mongoid
   has_mongoid_attached_file :image,
@@ -104,6 +103,12 @@ class Travel
 
   scope :not_in_companies, lambda { |companies|
     not_in(:company => companies)
+  }
+
+  scope :with_mood, lambda { |m_id|
+    mood = Mood.find(m_id.to_s)
+
+    Travel.where(:moods.in => [mood.id])
   }
 
   # Import method
