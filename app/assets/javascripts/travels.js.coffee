@@ -238,8 +238,8 @@ window.travelsJs =
 
       #we don't reset this slider
       #resetSlider(".price_range", 75, 300, "75€", "300€")
-      resetSlider(".within_time .start", 540, 1280, "09h00", "20h30")
-      resetSlider(".within_time .end", 540, 1280, "09h00", "20h30")
+      resetSlider(".within_time .start", 540, 1230, "09h00", "20h30")
+      resetSlider(".within_time .end", 540, 1230, "09h00", "20h30")
       e.preventDefault()
 
     resetSlider= (element, min_val, max_val, min, max) ->
