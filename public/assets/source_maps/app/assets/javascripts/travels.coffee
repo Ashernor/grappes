@@ -215,6 +215,12 @@ window.travelsJs =
       loadParams()
       e.preventDefault()
 
+    $(document).on 'click', '#travel_list li', (e) ->
+      $("#right_button").click()
+      title = $(this).find(".city").data("endcity")
+      clickButton(title)
+      e.preventDefault()
+
     $(document).on 'click', '.open_pin', (e) ->
       $("#right_button").click()
       title = $(this).parent().find(".city").data("endcity")

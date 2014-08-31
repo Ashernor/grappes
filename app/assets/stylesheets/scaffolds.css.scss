@@ -723,6 +723,7 @@ input[type="radio"]:checked + label::before, input[type="checkbox"]:checked + la
       list-style: none;
       height: 130px;
       position: relative;
+      cursor: pointer;
 
       &:first-of-type > div {
         background: #74d4f8 !important;
