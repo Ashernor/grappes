@@ -5,6 +5,8 @@
 window.travelsJs =
   init: ->
     parent = this
+    if $("#travel_list li").length == 0
+      $("#travel_list").append("<p>Pas de résultat</p>")
 
     getJson = (url) ->
       $.getJSON "#{url}"
@@ -41,9 +43,10 @@ window.travelsJs =
     availableTags = $("#travel_list").data("cities")
     $("#min_date").change ->
       val = $("#min_date").val().split('/')
-      date = new Date(val[1]+"/"+parseInt(val[0])+"/"+val[2])
-      date.setDate(date.getDate()+1)
-      $("#max_date").val($.datepicker.formatDate('dd/mm/yy', date))
+      if $("#min_date").val() != ""
+        date = new Date(val[1]+"/"+parseInt(val[0])+"/"+val[2])
+        date.setDate(date.getDate()+1)
+        $("#max_date").val($.datepicker.formatDate('dd/mm/yy', date))
     $(".autocomplete").autocomplete {
       source: availableTags
     }
@@ -137,9 +140,14 @@ window.travelsJs =
       else
         lessormore = "+"
       $("#map").animate({"margin-left": lessormore+'=200'});
-      $("#sidebar_left, #left_button").animate({"left": lessormore+'=200'});
-      $("#sidebar_left").toggleClass("active");
-      $("#left_button").toggleClass("active");
+      $("#sidebar_left, #left_button").animate({"left": lessormore+'=200'})
+      $("#sidebar_left").toggleClass("active")
+      $("#left_button").toggleClass("active")
+      map_width = $("#map").width()
+      if lessormore=="+"
+        $("#map").css("width", map_width-200+"px")
+      else
+        $("#map").css("width", "100%")
       return false;
 
     $("#right_button").click ->
@@ -150,9 +158,9 @@ window.travelsJs =
         lessormore = "+"
         contrary = "-"
       $("#map").animate({"margin-left": contrary+'=360'});
-      $("#sidebar_right, #right_button").animate({"right": lessormore+'=360'});
-      $("#sidebar_right").toggleClass("active");
-      $("#right_button").toggleClass("active");
+      $("#sidebar_right, #right_button").animate({"right": lessormore+'=360'})
+      $("#sidebar_right").toggleClass("active")
+      $("#right_button").toggleClass("active")
       return false;
 
   geoMap: ->
@@ -236,10 +244,11 @@ window.travelsJs =
       max_duration = parseInt($(".travel_time").data("max"))
       resetSlider(".travel_time", min_duration, max_duration, "#{min_duration}h", "#{max_duration}h")
 
-      #we don't reset this slider
+      min = parseInt($(".within_time").data("minhour"))*60
+      max = parseInt($(".within_time").data("maxhour"))*60
       #resetSlider(".price_range", 75, 300, "75€", "300€")
-      resetSlider(".within_time .start", 540, 1230, "09h00", "20h30")
-      resetSlider(".within_time .end", 540, 1230, "09h00", "20h30")
+      resetSlider(".within_time .start", min, max, translateTimeToText(min), translateTimeToText(max))
+      resetSlider(".within_time .end", min, max, translateTimeToText(min), translateTimeToText(max))
       e.preventDefault()
 
     resetSlider= (element, min_val, max_val, min, max) ->
@@ -248,11 +257,21 @@ window.travelsJs =
       $("#{element} #tooltip_left").text(min)
       $("#{element} #tooltip_right").text(max)
 
+    translateTimeToText=(value) ->
+      hours1 = Math.floor(value/60).toString()
+      minutes1 = (value - (hours1 * 60)).toString()
+      hours1 = '0' + hours1 if hours1.length == 1
+      minutes1 = '0' + minutes1 if minutes1.length == 1
+      time1 = hours1+"h"+minutes1
+      return time1
+
     loadParams= ->
       params = "/?"+$(".modified").serialize().replace(/\utf8=%E2%9C%93&/g,"")+" #travel_list"
       $("#loader").load(params, ->
         geoJson = parent.parseContent()
         myLayer.setGeoJSON(geoJson)
+        if $("#travel_list li").length == 0
+          $("#travel_list").append("<p>Pas de résultat</p>")
       )
       form_params = "/?"+$(".modified").serialize().replace(/\utf8=%E2%9C%93&/g,"")
       $(".exclude").load(form_params+" .exclude") unless $(".exclude").hasClass("modified")

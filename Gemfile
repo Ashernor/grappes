@@ -46,7 +46,7 @@ group :test do
   gem "factory_girl_rails"
   gem "shoulda"
   gem 'mocha'
-  gem "nokogiri"
+  gem "nokogiri", '~> 1.6.1'
   gem "capybara"
   gem "database_cleaner", "~> 1.2.0"
   gem "tconsole"

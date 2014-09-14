@@ -88,8 +88,8 @@ p, h1, h2, h3, h4, h5, h6, a {
 .color8 {z-index: 992 !important;}
 .color9 {z-index: 991 !important;}
 
-.ui-slider, .ui-slider-handle, label {
-  cursor: pointer;
+.ui-slider-handle, label {
+  cursor: pointer !important;
 }
 
 .mapbox-info-toggle {
@@ -217,6 +217,10 @@ input[type="radio"]:checked + label::before, input[type="checkbox"]:checked + la
   border: none;
   padding: 0;
 
+  .ui-datepicker-today {
+    background: #657f96;
+  }
+
   .ui-datepicker-header {
     background: #f2ae32;
     border-radius: 0;
@@ -281,7 +285,7 @@ input[type="radio"]:checked + label::before, input[type="checkbox"]:checked + la
         background: none !important;
         border: none !important;
         color: #fff !important;
-        font-weight: 200 !important;
+        font-weight: 500 !important;
         font-size: 0.8em;
         text-align: center;
 
@@ -719,6 +723,10 @@ input[type="radio"]:checked + label::before, input[type="checkbox"]:checked + la
     margin: 0;
     padding: 0;
 
+    p {
+      text-align: center;
+    }
+
     li {
       list-style: none;
       height: 130px;
@@ -1128,6 +1136,8 @@ input[type="radio"]:checked + label::before, input[type="checkbox"]:checked + la
       a {
         display: inline-block;
         width: 70px;
+        top: 2px;
+        position: relative;
 
         img {
           position: absolute;
