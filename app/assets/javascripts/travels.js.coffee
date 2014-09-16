@@ -40,7 +40,6 @@ window.travelsJs =
       dayNamesMin: ['D','L','M','M','J','V','S'],
       minDate: 0
     $(".datepicker").datepicker(options);
-
     $("#min_date").change ->
       val = $("#min_date").val().split('/')
       if $("#min_date").val() != ""
