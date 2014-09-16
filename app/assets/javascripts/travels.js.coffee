@@ -40,15 +40,22 @@ window.travelsJs =
       dayNamesMin: ['D','L','M','M','J','V','S'],
       minDate: 0
     $(".datepicker").datepicker(options);
-    availableTags = $("#travel_list").data("cities")
+
     $("#min_date").change ->
       val = $("#min_date").val().split('/')
       if $("#min_date").val() != ""
         date = new Date(val[1]+"/"+parseInt(val[0])+"/"+val[2])
         date.setDate(date.getDate()+1)
         $("#max_date").val($.datepicker.formatDate('dd/mm/yy', date))
+
+    availableTags = $("#travel_list").data("cities")
     $(".autocomplete").autocomplete {
-      source: availableTags
+      source: availableTags,
+      response: (event,ui) ->
+        if (ui.content.length == 1)
+          ui.item = ui.content[0].value
+          $(this).val(ui.item)
+          $(this).autocomplete('close');
     }
 
     # submit when modif finished
@@ -382,11 +389,13 @@ window.travelsJs =
         content = $(this).data("content")
         start_departure_time = $(this).data("starttime").toString().replace(".","h")
         start_arrival_time = $(this).data("endtime").toString().replace(".","h")
+        image = $(this).data("imageurl")
+        image = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Cherry_Blossoms_and_Washington_Monument.jpg/320px-Cherry_Blossoms_and_Washington_Monument.jpg" if $(this).data("imageurl") == "/images/medium/missing.png"
         geo = {
           type: 'Feature',
           "geometry": { "type": "Point", "coordinates": coordinates},
           "properties": {
-            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Cherry_Blossoms_and_Washington_Monument.jpg/320px-Cherry_Blossoms_and_Washington_Monument.jpg",
+            "image": image,
             "start_city": start_city,
             "start_airport": start_airport,
             "end_city": end_city,
