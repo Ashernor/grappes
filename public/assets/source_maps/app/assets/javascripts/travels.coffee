@@ -47,16 +47,6 @@ window.travelsJs =
         date.setDate(date.getDate()+1)
         $("#max_date").val($.datepicker.formatDate('dd/mm/yy', date))
 
-    availableTags = $("#travel_list").data("cities")
-    $(".autocomplete").autocomplete {
-      source: availableTags,
-      response: (event,ui) ->
-        if (ui.content.length == 1)
-          ui.item = ui.content[0].value
-          $(this).val(ui.item)
-          $(this).autocomplete('close');
-    }
-
     # submit when modif finished
     # Price range
     min_budget = $("#min_budget").val()
@@ -212,6 +202,21 @@ window.travelsJs =
       $.marker.addTo(map);
       $("img.leaflet-marker-icon").attr("src","/picto_pin.png").css("width","auto").css("margin-left","-15px").css("margin-top","-37px")
 
+    # autocomplete with ajax submission
+    availableTags = $("#travel_list").data("cities")
+    $(".autocomplete").autocomplete {
+      source: availableTags,
+      response: (event,ui) ->
+        if (ui.content.length == 1)
+          ui.item = ui.content[0].value
+          $(this).val(ui.item)
+          $(this).autocomplete('close');
+          get_json("https://maps.googleapis.com/maps/api/geocode/json?address=#{ui.item}").done (e) ->
+            json = e.results[0].geometry.location
+            createMarker(json)
+            loadParams()
+    }
+
     $("#from").bind "propertychange keyup input paste", ->
       parent.changeFromBackground()
 
@@ -219,7 +224,7 @@ window.travelsJs =
       parent.changeFromBackground()
       $(this).parent().addClass("modified") if $(this).parent().attr("method") == "get"
       $(this).parent().parent().addClass("modified") if $(this).parent().parent().attr("method") == "get"
-      if $(this).hasClass("autocomplete")
+      if $(this).hasClass("autocomplete") && $(this).val().length > 3
         get_json("https://maps.googleapis.com/maps/api/geocode/json?address=#{$(this).val()}").done (e) ->
           json = e.results[0].geometry.location
           createMarker(json)
