@@ -40,7 +40,6 @@ window.travelsJs =
       dayNamesMin: ['D','L','M','M','J','V','S'],
       minDate: 0
     $(".datepicker").datepicker(options);
-
     $("#min_date").change ->
       val = $("#min_date").val().split('/')
       if $("#min_date").val() != ""
@@ -54,7 +53,6 @@ window.travelsJs =
       response: (event,ui) ->
         if (ui.content.length == 1)
           ui.item = ui.content[0].value
-          console.log(ui.item)
           $(this).val(ui.item)
           $(this).autocomplete('close');
     }
