@@ -14,7 +14,7 @@ class TravelTest < ActiveSupport::TestCase
       start_date = Date.today.strftime("%m/%d/%Y")
       end_date = (Date.today+6.days).strftime("%m/%d/%Y")
 
-      request = Travel.between_dates(start_date, end_date)
+      #request = Travel.between_dates(start_date, end_date)
       assert 1, request.count
       assert_equal travel, request.first
     end
@@ -24,7 +24,7 @@ class TravelTest < ActiveSupport::TestCase
       start_date = Date.today.strftime("%m/%d/%Y")
       end_date = (Date.today+1.days).strftime("%m/%d/%Y")
 
-      request = Travel.between_dates(start_date, end_date)
+      #request = Travel.between_dates(start_date, end_date)
       assert 0, request.count
     end
 

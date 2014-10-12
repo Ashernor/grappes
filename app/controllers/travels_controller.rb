@@ -16,7 +16,8 @@ class TravelsController < ApplicationController
     #TODO: do a method for search
     @travels = @travels.from(params[:from]) if params[:from].present?
     @travels = @travels.in_budget(params[:min_budget], params[:max_budget]) if (params[:min_budget].present? && params[:max_budget].present?)
-    @travels = @travels.between_dates(params[:min_date], params[:max_date]) if params[:min_date].present? && params[:max_date].present?
+    @travels = @travels.with_start_date(params[:min_date]) if params[:min_date].present?
+    @travels = @travels.with_end_date(params[:max_date]) if params[:max_date].present?
     @travels = @travels.with_people(params[:nb_people]) if params[:nb_people].present?
     @travels = @travels.within_duration(params[:min_travel_time], params[:max_travel_time]) if params[:min_travel_time].present?
     @travels = @travels.number_of_stopover(params[:stopover]) if params[:stopover].present?
@@ -28,7 +29,7 @@ class TravelsController < ApplicationController
     @travels = @travels.not_in_companies(params[:companies]) if params[:companies].present?
     @travels = @travels.with_mood(params[:mood]) if params[:mood].present?
     # we want to show the cheapest flights first
-    @travels.asc(:price)
+    @travels.asc(:price) if @travels
 
     @citys = Travel.all.map(&:start_city).uniq
     @front_travels = Travel.prefered("ok").empty? ? Travel.all : Travel.prefered("ok")

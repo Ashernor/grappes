@@ -61,12 +61,18 @@ class Travel
   }
 
   # Only return the travel between a date range
-  scope :between_dates, lambda { |start_date, end_date|
-    end_date =  Date.strptime(end_date,"%d/%m/%Y").to_datetime+1.day
-    all_of(
-      {:departure => {'$gte' => Date.strptime(start_date,"%d/%m/%Y").to_datetime }},
-      {:arrival => {'$lte' => end_date }}
-    )
+  scope :with_start_date, lambda { |start_date|
+    start_date_s = start_date.to_date.beginning_of_day
+    start_date_e = start_date.to_date.end_of_day
+
+    where(:departure => {'$gte' => start_date_s, '$lte' => start_date_e})
+  }
+
+  scope :with_end_date, lambda { |end_date|
+    end_date_s =  end_date.to_date.beginning_of_day
+    end_date_e =  end_date.to_date.end_of_day
+
+    where(:arrival => {'$gte' => end_date_s, '$lte' => end_date_e})
   }
 
   scope :with_people, lambda { |number_of_people|
