@@ -21,4 +21,5 @@ class Cms
   field :two_way_trip2, type: String, default: "Aller <span>Retour</span>"
   field :budget, type: String, default: "Budget"
   field :friends, type: String, default: "Amis"
+  field :footer, type: String, default: ""
 end
