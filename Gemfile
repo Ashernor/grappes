@@ -17,7 +17,7 @@ gem 'iconv', '~> 1.0.4'
 
 # No need to specify a version for them
 gem "annotate"
-gem 'thin'
+#gem 'thin'
 
 # Logging
 gem "lograge", "~> 0.2.2"

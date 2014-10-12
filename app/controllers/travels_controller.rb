@@ -28,7 +28,7 @@ class TravelsController < ApplicationController
     @travels = @travels.not_in_companies(params[:companies]) if params[:companies].present?
     @travels = @travels.with_mood(params[:mood]) if params[:mood].present?
     # we want to show the cheapest flights first
-    @travels.asc(:price)
+    @travels.asc(:price) if @travels
 
     @citys = Travel.all.map(&:start_city).uniq
     @front_travels = Travel.prefered("ok").empty? ? Travel.all : Travel.prefered("ok")
