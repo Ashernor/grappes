@@ -79,6 +79,6 @@ Grappes::Application.configure do
   config.log_formatter = ::Logger::Formatter.new
 
   config.middleware.use '::Rack::Auth::Basic' do |u, p|
-    [u, p] == ["admin", "grapy_grapy"] || ["test", "grapy"]
+    [u, p] == ["admin", "Grapydemo1014"]
   end
 end
