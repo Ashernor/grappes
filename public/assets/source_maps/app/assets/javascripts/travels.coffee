@@ -190,7 +190,7 @@ window.travelsJs =
     myLayer.on 'layeradd', (e) ->
       marker = e.layer
       feature = marker.feature
-      popupContent =  '<div class="left"><h4>'+feature.properties.end_city+'</h4>'+'<img src="' + feature.properties.image + '" /><span class="blurred"></span><p>'+feature.properties.content+'</p></div><div class="right"><ul class="start"><li><span class="start_date">'+feature.properties.start_date+'</span><br/><b>'+feature.properties.start_city+'</b><br/><b>'+feature.properties.end_city+'</b></li><li class="company">'+feature.properties.company+'<br/><span class="hours">'+feature.properties.start_departure_time+'- '+feature.properties.start_arrival_time+'</span></li></ul><ul class="end"><li><span class="end_date">'+feature.properties.end_date+'</span><br/><b>'+feature.properties.end_city+'</b><br/><b>'+feature.properties.start_city+'</b></li><li class="company">'+feature.properties.company+'<br/><span class="hours">'+feature.properties.start_departure_time+'- '+feature.properties.start_arrival_time+'</span></li></ul></div><div class="bottom">Reserver ce trajet pour <span>'+feature.properties.price+'</span><div></div>'
+      popupContent =  '<div class="left"><h4>'+feature.properties.end_city+'</h4>'+'<img src="' + feature.properties.image + '" /><span class="blurred"></span><p>'+feature.properties.content+'</p><a class="share" href="#">Partager</a></div><div class="right"><ul class="start"><li><span class="start_date">'+feature.properties.start_date+'</span><br/><b>'+feature.properties.start_city+'</b><br/><b>'+feature.properties.end_city+'</b></li><li class="company">'+feature.properties.company+'<br/><span class="hours">'+feature.properties.start_departure_time+' - '+feature.properties.start_arrival_time+'</span><b class="price">'+feature.properties.price+'</b></li></ul><ul class="end"><li><span class="end_date">'+feature.properties.end_date+'</span><br/><b>'+feature.properties.end_city+'</b><br/><b>'+feature.properties.start_city+'</b></li><li class="company">'+feature.properties.company+'<br/><span class="hours">'+feature.properties.start_departure_time+' - '+feature.properties.start_arrival_time+'</span><b class="price">'+feature.properties.price+'</b></li></ul></div><div class="bottom">Reserver ce trajet pour <span>'+feature.properties.price+'</span><div></div>'
       marker.bindPopup popupContent,
         closeButton: false
         minWidth: 320
@@ -227,10 +227,11 @@ window.travelsJs =
           ui.item = ui.content[0].value
           $(this).val(ui.item)
           $(this).autocomplete('close');
-          get_json("https://maps.googleapis.com/maps/api/geocode/json?address=#{ui.item}").done (e) ->
-            json = e.results[0].geometry.location
-            createMarker(json)
-            loadParams()
+        get_json("https://maps.googleapis.com/maps/api/geocode/json?address=#{ui.content[0].value}").done (e) ->
+          console.log(ui.content[0].value, e)
+          json = e.results[0].geometry.location
+          createMarker(json)
+          loadParams()
     }
 
 
