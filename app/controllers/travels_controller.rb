@@ -31,7 +31,16 @@ class TravelsController < ApplicationController
     # we want to show the cheapest flights first
     @travels.asc(:price) if @travels
 
-    @citys = Travel.all.map(&:start_city).uniq
+    #@citys = Travel.all.map(&:start_city).uniq
+    @citys = []
+    @citys = Travel.all.map {|t|
+      hash = {}
+      hash["value"] = t.start_city
+      hash["label"] = "#{t.start_city} - #{t.start_airport_code}"
+
+      hash
+    }.uniq
+
     @front_travels = Travel.prefered("ok").empty? ? Travel.all : Travel.prefered("ok")
     @companies = @travels.pluck(:company).uniq if @travels
     @end_countries = @travels.pluck(:end_country).uniq.sort_by!{ |e| e.downcase }.delete_if(&:empty?) if @travels

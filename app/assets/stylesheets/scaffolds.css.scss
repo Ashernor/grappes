@@ -488,6 +488,12 @@ input[type="radio"]:checked + label::before, input[type="checkbox"]:checked + la
   }
 }
 
+.fusion {
+  .tooltip {
+    background: #fff;
+  }
+}
+
 .leaflet-popup-tip-container {
   margin-bottom: -20px;
 }

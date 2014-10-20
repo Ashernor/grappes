@@ -73,8 +73,11 @@ window.travelsJs =
       max: parseInt(max),
       values: [min_budget, max_budget],
       slide: (event, ui) ->
-        if ((ui.values[0]+140) >= ui.values[1])
+        if ((ui.values[0]+70) >= ui.values[1])
+          $(this).addClass("fusion")
           return false
+        else
+          $(this).removeClass("fusion")
         $("#min_budget").val(ui.values[0])
         $("#max_budget").val(ui.values[1])
         tooltip1.text(ui.values[0]+"€")
@@ -229,6 +232,7 @@ window.travelsJs =
             createMarker(json)
             loadParams()
     }
+
 
     $("#from").bind "propertychange keyup input paste", ->
       parent.changeFromBackground()
