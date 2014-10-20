@@ -221,6 +221,17 @@ window.travelsJs =
     $("#from").bind "propertychange keyup input paste", ->
       parent.changeFromBackground()
 
+    $(document).find("input[type='radio']").addClass('radioInactive');
+
+    $(document).on 'click', "input[type='radio']", ->
+      # We we can deslect radio buttons
+      if $(this).hasClass('radioInactive')
+        $(this).prop('checked', true);
+      else
+        $(this).prop('checked', false);
+      $(this).toggleClass('radioInactive')
+
+
     $(document).on 'change', 'form input', ->
       parent.changeFromBackground()
       $(this).parent().addClass("modified") if $(this).parent().attr("method") == "get"

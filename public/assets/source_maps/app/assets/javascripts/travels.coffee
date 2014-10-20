@@ -49,11 +49,12 @@ window.travelsJs =
 
     # submit when modif finished
     # Price range
-    min_budget = $("#min_budget").val()
-    max_budget = $("#max_budget").val()
-    min_budget = 75 if (min_budget == "") || (max_budget == "")
-    max_budget = 300 if (min_budget == "") || (max_budget == "")
+    min_b = $("#min_budget").val()
+    max_b = $("#max_budget").val()
+    min_budget = 75 if (min_b == "") || (max_b == "")
+    max_budget = 300 if (min_b == "") || (max_b == "")
     max = $(".price_range").data("max")
+    max = max_budget if max < max_budget
     tooltip1 = $('<div id="tooltip_left" class="tooltip" />').text(min_budget+"€")
     tooltip2 = $('<div id="tooltip_right" class="tooltip" />').text(max_budget+"€")
     $( "#slider-range" ).slider {
@@ -219,6 +220,17 @@ window.travelsJs =
 
     $("#from").bind "propertychange keyup input paste", ->
       parent.changeFromBackground()
+
+    $(document).find("input[type='radio']").addClass('radioInactive');
+
+    $(document).on 'click', "input[type='radio']", ->
+      # We we can deslect radio buttons
+      if $(this).hasClass('radioInactive')
+        $(this).prop('checked', true);
+      else
+        $(this).prop('checked', false);
+      $(this).toggleClass('radioInactive')
+
 
     $(document).on 'change', 'form input', ->
       parent.changeFromBackground()
