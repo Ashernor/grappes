@@ -110,10 +110,14 @@ class TravelsController < ApplicationController
     end
 
     def retrieve_search_params_from_cookies
-      params[:from] = cookies[:from] if cookies[:from]
-      params[:min_budget] = cookies[:min_budget] unless cookies[:min_budget].blank?
-      params[:max_budget] = cookies[:max_budget] unless cookies[:max_budget].blank?
-      params[:min_date] = cookies[:min_date] unless cookies[:min_date].blank?
-      params[:max_date] = cookies[:max_date] unless cookies[:max_date].blank?
+      if !cookies[:min_date].blank?
+        if cookies[:min_date].to_date >= Date.today
+            params[:from] = cookies[:from] if cookies[:from]
+            params[:min_budget] = cookies[:min_budget] unless cookies[:min_budget].blank?
+            params[:max_budget] = cookies[:max_budget] unless cookies[:max_budget].blank?
+            params[:min_date] = cookies[:min_date] unless cookies[:min_date].blank?
+            params[:max_date] = cookies[:max_date] unless cookies[:max_date].blank?
+        end
+      end
     end
 end
