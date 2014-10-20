@@ -51,10 +51,20 @@ window.travelsJs =
     # Price range
     min_b = $("#min_budget").val()
     max_b = $("#max_budget").val()
-    min_budget = 75 if (min_b == "") || (max_b == "")
-    max_budget = 300 if (min_b == "") || (max_b == "")
-    max = $(".price_range").data("max")
-    max = max_budget if max < max_budget
+    if ((min_b == "") || (max_b == ""))
+      min_budget = 75
+    else
+      min_budget = min_b
+    if ((min_b == "") || (max_b == ""))
+      max_budget = 300
+    else
+      max_budget = max_b
+    max = 0
+    max_v = $(".price_range").data("max")
+    if (max_v < max_budget)
+      max = max_v
+    else
+      max = max_budget
     tooltip1 = $('<div id="tooltip_left" class="tooltip" />').text(min_budget+"€")
     tooltip2 = $('<div id="tooltip_right" class="tooltip" />').text(max_budget+"€")
     $( "#slider-range" ).slider {
@@ -136,26 +146,27 @@ window.travelsJs =
         lessormore = "-"
       else
         lessormore = "+"
-      $("#map").animate({"margin-left": lessormore+'=200'});
       $("#sidebar_left, #left_button").animate({"left": lessormore+'=200'})
       $("#sidebar_left").toggleClass("active")
       $("#left_button").toggleClass("active")
-      map_width = $("#map").width()
+      window_width = $(window).width()
       if lessormore=="+"
-        $("#map").css("width", map_width-200+"px")
+        $("#map").css("width", window_width+200+"px")
       else
-        $("#map").css("width", "100%")
+        $("#map").css("width", window_width+"px")
       return false;
 
     $("#right_button").click ->
       if ($("#sidebar_right").hasClass("active"))
         lessormore = "-"
-        contrary = "+"
       else
         lessormore = "+"
-        contrary = "-"
-      $("#map").animate({"margin-left": contrary+'=360'});
       $("#sidebar_right, #right_button").animate({"right": lessormore+'=360'})
+      window_width = $(window).width()
+      if lessormore=="+"
+        $("#map").css("width", window_width+200+"px")
+      else
+        $("#map").css("width", window_width+"px")
       $("#sidebar_right").toggleClass("active")
       $("#right_button").toggleClass("active")
       return false;
