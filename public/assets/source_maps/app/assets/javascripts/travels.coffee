@@ -212,6 +212,7 @@ window.travelsJs =
         coordinates["lng"]
       ))
       $.marker.addTo(map);
+      map.panTo($.marker.getLatLng());
       $("img.leaflet-marker-icon").attr("src","/picto_pin.png").css("width","auto").css("margin-left","-15px").css("margin-top","-37px")
 
     # autocomplete with ajax submission
