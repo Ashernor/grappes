@@ -4,6 +4,7 @@ body {
   font-family: 'Exo 2', sans-serif;
   font-weight: 400;
   font-size: 0.9em;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* general */
@@ -1104,6 +1105,62 @@ input[type="radio"]:checked + label::before, input[type="checkbox"]:checked + la
       }
     }
 
+  }
+}
+
+.hover_popup {
+  width: 200px;
+  height: 174px;
+  border: 4px solid #fff;
+  background: #253b4e;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 15px;
+  overflow: hidden;
+
+  z-index: 9999999;
+
+  h4 {
+    width: 100%;
+    height: 30px;
+    color: #fff;
+    font-size: 1.4em;
+    padding: 3px 0 0 30px;
+    letter-spacing: 1px;
+    font-weight: 400;
+    margin-bottom: 0;
+    background: #8dd3f2 image-url('grapy_popup_left.png') 4px 0px no-repeat;
+    margin-top: 0;
+
+    span {
+      font-weight: 200;
+    }
+  }
+
+  h5 {
+    color: #fff;
+    font-size: 1.2em;
+    font-weight: 600;
+    margin: 0;
+    width: 100%;
+    height: 30px;
+    text-align: center;
+    background: #8dd3f2;
+    line-height: 1.7;
+  }
+
+  p {
+    padding-left: 35px;
+    color: #fff;
+
+    &:first-of-type {
+      background: image-url('plane_start.jpg') no-repeat left 0px;
+    }
+
+    &:last-of-type {
+      background: image-url('plane_end.jpg') no-repeat left 0px;
+    }
   }
 }
 

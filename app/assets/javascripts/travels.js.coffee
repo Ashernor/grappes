@@ -190,6 +190,22 @@ window.travelsJs =
 
     myLayer = L.mapbox.featureLayer().addTo(map)
 
+    myLayer.on 'mouseover', (e) ->
+      marker = e.layer
+      feature = marker.feature
+      posX = event.pageX
+      poxY = event.pageY
+      console.log(feature.properties)
+      hover = "<div class='hover_popup' style='left: "+posX+"px; top: "+poxY+"px' data-city='"+feature.properties.end_city+"'>
+      <h4>#{feature.properties.end_city}</h4>
+      <p class='start'>#{feature.properties.start_date}<br/>09h00 - 14h00</p>
+      <p class='end'>#{feature.properties.end_date}<br/>15h00 - 21h00</p>
+      <h5>#{feature.properties.price}</h5>
+      </div>"
+      $("body").append(hover)
+    myLayer.on 'mouseout', (e) ->
+      $(".hover_popup").remove()
+
     myLayer.on 'layeradd', (e) ->
       marker = e.layer
       feature = marker.feature
