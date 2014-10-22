@@ -73,9 +73,12 @@ window.travelsJs =
       max: parseInt(max),
       values: [min_budget, max_budget],
       slide: (event, ui) ->
-        if ((ui.values[0]+70) >= ui.values[1])
+        right  = $("#tooltip_right").offset().left
+        left   = $("#tooltip_left").offset().left
+        if ((right-left) < 40)
           $(this).addClass("fusion")
-          return false
+          unless ui.values[0] < $("#min_budget").val() || ui.values[1] > $("#max_budget").val()
+            return false
         else
           $(this).removeClass("fusion")
         $("#min_budget").val(ui.values[0])
@@ -228,7 +231,6 @@ window.travelsJs =
           $(this).val(ui.item)
           $(this).autocomplete('close');
         get_json("https://maps.googleapis.com/maps/api/geocode/json?address=#{ui.content[0].value}").done (e) ->
-          console.log(ui.content[0].value, e)
           json = e.results[0].geometry.location
           createMarker(json)
           loadParams()
