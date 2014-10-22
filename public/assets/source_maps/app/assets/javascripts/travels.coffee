@@ -75,7 +75,7 @@ window.travelsJs =
       slide: (event, ui) ->
         right  = $("#tooltip_right").offset().left
         left   = $("#tooltip_left").offset().left
-        if ((right-left) < 40)
+        if ((right-left) < 37)
           $(this).addClass("fusion")
           unless ui.values[0] < $("#min_budget").val() || ui.values[1] > $("#max_budget").val()
             return false
@@ -259,7 +259,8 @@ window.travelsJs =
         get_json("https://maps.googleapis.com/maps/api/geocode/json?address=#{$(this).val()}").done (e) ->
           json = e.results[0].geometry.location
           createMarker(json)
-      loadParams()
+      if $("#from").val().length > 2 && $("#min_date").val().length > 2 && $("#max_date").val().length > 2
+        loadParams()
 
     $("form").submit (e) ->
       loadParams()

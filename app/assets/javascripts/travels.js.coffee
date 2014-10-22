@@ -259,7 +259,8 @@ window.travelsJs =
         get_json("https://maps.googleapis.com/maps/api/geocode/json?address=#{$(this).val()}").done (e) ->
           json = e.results[0].geometry.location
           createMarker(json)
-      loadParams()
+      if $("#from").val().length > 2 && $("#min_date").val().length > 2 && $("#max_date").val().length > 2
+        loadParams()
 
     $("form").submit (e) ->
       loadParams()
