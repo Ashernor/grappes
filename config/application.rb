@@ -8,7 +8,7 @@ require "sprockets/railtie"
 require "rails/test_unit/railtie"
 require 'csv'
 require 'iconv'
-#require 'qpx'
+require 'qpx'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -24,6 +24,6 @@ module Grappes
     config.assets.initialize_on_precompile = false
     config.assets.precompile += ['rails_admin/rails_admin.css', 'rails_admin/rails_admin.js']
     config.serve_static_assets = true
- #   Qpx::Api.configure
+    Qpx::Api.configure
   end
 end
