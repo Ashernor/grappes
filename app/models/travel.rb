@@ -27,6 +27,7 @@ class Travel
   field :coordinates, :type => Array
   field :title, :type => String
   field :prefered, :type => Mongoid::Boolean
+  field :direct_trip, :type => Mongoid::Boolean
   #Automatic fields
   field :start_time, type: Float
   field :end_time, type: Float
