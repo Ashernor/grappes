@@ -14,22 +14,16 @@ class TravelsController < ApplicationController
     @travels = params.size == 2 ? nil : Travel.in_budget(0, @max_price)
 
     #TODO: do a method for search
-    @travels = @travels.from(params[:from]) if params[:from].present?
-    @travels = @travels.in_budget(params[:min_budget], params[:max_budget]) if (params[:min_budget].present? && params[:max_budget].present?)
-    @travels = @travels.with_start_date(params[:min_date]) if params[:min_date].present?
-    @travels = @travels.with_end_date(params[:max_date]) if params[:max_date].present?
-    @travels = @travels.with_people(params[:nb_people]) if params[:nb_people].present?
-    @travels = @travels.within_duration(params[:min_travel_time], params[:max_travel_time]) if params[:min_travel_time].present?
-    @travels = @travels.number_of_stopover(params[:stopover]) if params[:stopover].present?
-    #between start time and end_time
-    @travels = @travels.within_start_time(params[:min_start_time], params[:max_start_time]) if params[:min_start_time].present?
-    @travels = @travels.within_end_time(params[:min_end_time], params[:max_end_time]) if params[:min_end_time].present?
-    @travels = @travels.order_by(:price => :asc).limit(50) if @travels
-    @travels = @travels.not_in_countries( params[:countries]) if params[:countries]
-    @travels = @travels.not_in_companies(params[:companies]) if params[:companies].present?
-    @travels = @travels.with_mood(params[:mood]) if params[:mood].present?
-    # we want to show the cheapest flights first
-    @travels.asc(:price) if @travels
+    filter_travel(params)
+
+    ########## QPX: call api and refilter, unless there is travels filtered. ###########
+    unless @travels
+      Qpx::Api.multi_search_trips_by_city(params['from'],params[:min_date],params[:max_date],params[:nb_people],params[:max_budget])
+      @travels = Travel.in_budget(0, @max_price)
+      filter_travel(params)
+    end
+    ########## END QPX ###########
+
 
     #@citys = Travel.all.map(&:start_city).uniq
     @citys = []
@@ -51,6 +45,25 @@ class TravelsController < ApplicationController
 
     @cms = Cms.where(:language == "fr").last
 
+  end
+
+  def filter_travel(params)
+    @travels = @travels.from(params[:from]) if params[:from].present?
+    @travels = @travels.in_budget(params[:min_budget], params[:max_budget]) if (params[:min_budget].present? && params[:max_budget].present?)
+    @travels = @travels.with_start_date(params[:min_date]) if params[:min_date].present?
+    @travels = @travels.with_end_date(params[:max_date]) if params[:max_date].present?
+    @travels = @travels.with_people(params[:nb_people]) if params[:nb_people].present?
+    @travels = @travels.within_duration(params[:min_travel_time], params[:max_travel_time]) if params[:min_travel_time].present?
+    @travels = @travels.number_of_stopover(params[:stopover]) if params[:stopover].present?
+    #between start time and end_time
+    @travels = @travels.within_start_time(params[:min_start_time], params[:max_start_time]) if params[:min_start_time].present?
+    @travels = @travels.within_end_time(params[:min_end_time], params[:max_end_time]) if params[:min_end_time].present?
+    @travels = @travels.order_by(:price => :asc).limit(50) if @travels
+    @travels = @travels.not_in_countries(params[:countries]) if params[:countries]
+    @travels = @travels.not_in_companies(params[:companies]) if params[:companies].present?
+    @travels = @travels.with_mood(params[:mood]) if params[:mood].present?
+    # we want to show the cheapest flights first
+    @travels.asc(:price) if @travels
   end
 
   # GET /travels/1

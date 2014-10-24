@@ -16,8 +16,7 @@ gem 'roo'
 gem 'iconv', '~> 1.0.4'
 
 # Flight API calls.
-#gem "mongo", github: 'mongodb/mongo-ruby-driver'
-#gem 'qpx', github: 'yawo/qpx'
+gem 'qpx', github: 'yawo/qpx'
 
 
 # No need to specify a version for them
