@@ -41,6 +41,7 @@ gem "airbrake"
 group :development, :test do
  # gem 'debugger'
   gem 'pry'
+  gem 'quiet_assets'
   gem "seed_dump"
   gem "binding_of_caller"
   gem "better_errors"

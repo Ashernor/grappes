@@ -12,20 +12,28 @@ class TravelsController < ApplicationController
     @max_duration = Travel.pluck(:duration).max || 12
 
     @travels = params.size == 2 ? nil : Travel.in_budget(0, @max_price)
-
+    puts "=== Params: #{params}"
+    puts "=== Initial travels count: "+ @travels.count.to_s
     #TODO: do a method for search
-    filter_travel(params)
+    filter_travel_general_info(params)
 
+    puts "=== General travels count: "+ @travels.count.to_s
+    #TODO: do a method for search
     ########## QPX: call api and refilter, unless there is travels filtered. ###########
     #TODO: call API even when Travels are outdated (use the search_date field).
     if (@travels.nil? or @travels.empty?) and not (params['from'].nil? or params['from'].lstrip == '')
       start_date  = params[:min_date].to_date if params['min_date'].present?
-      #end_date    = params[:max_date].to_date if params['max_date'].present?
+      end_date    = params[:max_date].to_date if params['max_date'].present?
       nb_people   = (params[:nb_people].present?)?params[:nb_people].to_i : 1
       max_budget  = (params[:max_budget].present?)?params[:max_budget].to_f : @max_price
       Qpx::Api.multi_search_trips(params['from'],start_date,nil,nb_people,max_budget)
       @travels = Travel.in_budget(0, @max_price)
-      filter_travel(params)
+      filter_travel_general_info(params)
+      puts "=== After Api Call travels count"+ @travels.count.to_s
+      #TODO: do a method for search
+      filter_travel_details(params)
+      puts "=== After details filters travels count"+ @travels.count.to_s
+    #TODO: do a method for search
     end
     ########## END QPX ###########
 
@@ -58,12 +66,16 @@ class TravelsController < ApplicationController
 
   end
 
-  def filter_travel(params)
+  def filter_travel_general_info(params)
     @travels = @travels.from(params[:from]) if params[:from].present?
     @travels = @travels.in_budget(params[:min_budget], params[:max_budget]) if (params[:min_budget].present? && params[:max_budget].present?)
     @travels = @travels.with_start_date(params[:min_date]) if params[:min_date].present?
     @travels = @travels.with_end_date(params[:max_date]) if params[:max_date].present?
     @travels = @travels.with_people(params[:nb_people]) if params[:nb_people].present?
+  end
+
+
+  def filter_travel_details(params)
     @travels = @travels.within_duration(params[:min_travel_time], params[:max_travel_time]) if params[:min_travel_time].present?
     @travels = @travels.number_of_stopover(params[:stopover]) if params[:stopover].present?
     #between start time and end_time

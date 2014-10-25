@@ -82,7 +82,13 @@ class Travel
   }
 
   scope :from, lambda { |iata_code|
-    any_of({ :start_city_code => iata_code })
+    #any_of({ :start_city_code => iata_code })
+    airport = Airport.where(iata_code: iata_code).first
+    if(airport['name'] == 'All Airports')
+      where(start_city: airport['city'])
+    else
+      where(start_airport_code: iata_code)
+    end
   }
 
   scope :prefered, lambda { |test|
