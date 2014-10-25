@@ -204,6 +204,10 @@ input[type="radio"]:checked + label::before, input[type="checkbox"]:checked + la
   font-size: 0.8em !important;
 }
 
+.ui-menu .ui-menu-item a.ui-state-focus  {
+  background: #657f96 !important;
+}
+
 .ui-datepicker table {
   margin: 0;
 }
@@ -1196,7 +1200,7 @@ input[type="radio"]:checked + label::before, input[type="checkbox"]:checked + la
         position: absolute;
         width: 100%;
       }
-      
+
       span {
         position: absolute;
         height: 25px;

@@ -22,5 +22,5 @@ class Airport
 
   geocoded_by :iata_code        # can also be an IP address
 
-
+  scope :first_class, -> { where(first_class: true).ne(iata_code: '')}
 end

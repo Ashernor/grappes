@@ -39,7 +39,8 @@ gem 'smarter_csv'
 gem "airbrake"
 
 group :development, :test do
-  gem 'debugger'
+ # gem 'debugger'
+  gem 'pry'
   gem "seed_dump"
   gem "binding_of_caller"
   gem "better_errors"

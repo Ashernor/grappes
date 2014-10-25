@@ -17,8 +17,13 @@ class TravelsController < ApplicationController
     filter_travel(params)
 
     ########## QPX: call api and refilter, unless there is travels filtered. ###########
-    unless @travels
-      Qpx::Api.multi_search_trips_by_city(params['from'],params[:min_date],params[:max_date],params[:nb_people],params[:max_budget])
+    #TODO: call API even when Travels are outdated (use the search_date field).
+    if (@travels.nil? or @travels.empty?) and not (params['from'].nil? or params['from'].lstrip == '')
+      start_date  = params[:min_date].to_date if params['min_date'].present?
+      #end_date    = params[:max_date].to_date if params['max_date'].present?
+      nb_people   = (params[:nb_people].present?)?params[:nb_people].to_i : 1
+      max_budget  = (params[:max_budget].present?)?params[:max_budget].to_f : @max_price
+      Qpx::Api.multi_search_trips(params['from'],start_date,nil,nb_people,max_budget)
       @travels = Travel.in_budget(0, @max_price)
       filter_travel(params)
     end
@@ -27,6 +32,12 @@ class TravelsController < ApplicationController
 
     #@citys = Travel.all.map(&:start_city).uniq
     @citys = []
+    @citys = Airport.collection.aggregate([
+      {'$match'  => {'first_class' => true, 'iata_code' =>  {'$ne' => ''}}},
+      {'$project'=> {'_id' => 0,'value' => '$iata_code', 'label' => {'$concat' => ['$city',' - ','$name']}}}
+    ])
+    #Qpx::Api.logger.debug "========= Cities = #{@citys.inspect}"
+=begin
     @citys = Travel.all.map {|t|
       hash = {}
       hash["value"] = t.start_city
@@ -34,7 +45,7 @@ class TravelsController < ApplicationController
 
       hash
     }.uniq
-
+=end
     @front_travels = Travel.prefered("ok").empty? ? Travel.all : Travel.prefered("ok")
     @companies = @travels.pluck(:company).uniq if @travels
     @end_countries = @travels.pluck(:end_country).uniq.sort_by!{ |e| e.downcase }.delete_if(&:empty?) if @travels

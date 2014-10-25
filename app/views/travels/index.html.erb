@@ -107,6 +107,7 @@
           </h5>
           <a class="tag_click" href="#"><%= image_tag('go_blanc.jpg') %></a>
         </div>
+        <% unless @front_travels.nil? or @front_travels.empty? %>
         <div class="bloc">
           <h4><%= @front_travels[0].end_city %><span> (<%= @front_travels[0].end_airport_code %>)</span></h4>
           <div>
@@ -147,6 +148,7 @@
             <p class="end_bloc"><%= @cms.from_price2 %> <%= number_to_currency(@front_travels[0].price, locale: :fr, precision: 0, format: "%n%u") %> <a href="#"><%= image_tag("go_jaune.png") %></a> </p>
           </div>
         </div>
+      <% end %>
         <div class="bloc ln">
           <%= image_tag('ad2.png') %>
         </div>

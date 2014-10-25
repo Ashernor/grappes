@@ -32,6 +32,7 @@ class Travel
   field :start_time, type: Float
   field :end_time, type: Float
   field :duration, type: Integer
+  field :search_date, type: DateTime
 
   geocoded_by :end_city               # can also be an IP address
 
@@ -80,8 +81,8 @@ class Travel
     where(:places_available => {'$gte' => number_of_people.to_i})
   }
 
-  scope :from, lambda { |city|
-    any_of({ :start_city => /.*#{city.capitalize}.*/ })
+  scope :from, lambda { |iata_code|
+    any_of({ :start_city_code => iata_code })
   }
 
   scope :prefered, lambda { |test|
