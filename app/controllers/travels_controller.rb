@@ -18,10 +18,13 @@ class TravelsController < ApplicationController
     @cms = Cms.where(:language == "fr").last
 
     @citys = []
-    @citys = Airport.collection.aggregate([
-      {'$match'  => {'first_class' => true, 'iata_code' =>  {'$ne' => ''}}},
-      {'$project'=> {'_id' => 0,'value' => '$city', 'label' => {'$concat' => ['$city',' - ','$name']}}}
-    ])
+    @citys = Airport.all.map {|t|
+      hash = {}
+      hash["value"] = t.city
+      hash["label"] = "#{t.city} - #{t.iata_code}"
+
+      hash
+    }.uniq
     #Qpx::Api.logger.debug "========= Cities = #{@citys.inspect}"
     # Nothing to do until user selected params.
     unless params[:from].present? and params[:min_date].present? and params[:max_date].present?

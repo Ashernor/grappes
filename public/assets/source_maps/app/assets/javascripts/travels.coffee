@@ -56,7 +56,7 @@ window.travelsJs =
     else
       min_budget = min_b
     if ((min_b == "") || (max_b == ""))
-      max_budget = 600
+      max_budget = 1000
     else
       max_budget = max_b
     max = 0
