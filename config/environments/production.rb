@@ -87,5 +87,5 @@ Grappes::Application.configure do
   Qpx::Api.configure({mongo_url:      "#{uri.host}:#{uri.port}",
                       mongo_username: uri.user,
                       mongo_password: uri.password,
-                      mongo_db_name:  uri.path.sub('/',''))
+                      mongo_db_name:  uri.path.sub('/','')})
 end
