@@ -1,4 +1,5 @@
 require 'qpx'
+require "rest-client"
 Grappes::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -83,6 +84,8 @@ Grappes::Application.configure do
     [u, p] == ["admin", "Grapydemo1014"]
   end
 
+  RestClient.proxy = ENV['QUOTAGUARDSTATIC_URL'] if ENV['QUOTAGUARDSTATIC_URL'].present?
+  Rails.logger.info "Using proxy for static IP #{ENV['QUOTAGUARDSTATIC_URL']}"
   uri = URI.parse(ENV['MONGOHQ_URL'])
   Qpx::Api.configure({mongo_url:      "#{uri.host}:#{uri.port}",
                       mongo_username: uri.user,
