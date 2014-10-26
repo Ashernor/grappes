@@ -1,3 +1,4 @@
+require 'qpx'
 Grappes::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -81,4 +82,6 @@ Grappes::Application.configure do
   config.middleware.use '::Rack::Auth::Basic' do |u, p|
     [u, p] == ["admin", "Grapydemo1014"]
   end
+
+  Qpx::Api.configure({mongo_url: ENV['MONGOHQ_URL']})
 end
