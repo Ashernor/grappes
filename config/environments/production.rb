@@ -83,5 +83,9 @@ Grappes::Application.configure do
     [u, p] == ["admin", "Grapydemo1014"]
   end
 
-  Qpx::Api.configure({mongo_url: ENV['MONGOHQ_URL']})
+  uri = URI.parse(ENV['MONGOHQ_URL'])
+  Qpx::Api.configure({mongo_url:      "#{uri.host}:#{uri.port}",
+                      mongo_username: uri.user,
+                      mongo_password: uri.password,
+                      mongo_db_name:  uri.path.sub('/',''))
 end
