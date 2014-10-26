@@ -56,7 +56,7 @@ window.travelsJs =
     else
       min_budget = min_b
     if ((min_b == "") || (max_b == ""))
-      max_budget = 300
+      max_budget = 600
     else
       max_budget = max_b
     max = 0
@@ -325,17 +325,21 @@ window.travelsJs =
       return time1
 
     loadParams= ->
-      params = "/?"+$(".modified").serialize().replace(/\utf8=%E2%9C%93&/g,"")+" #travel_list"
-      $("#loader").load(params, ->
+      $("body").append("<div id='hiddenLoader' class='hidden'/>")
+      form_params = "/?"+$(".modified").serialize().replace(/\utf8=%E2%9C%93&/g,"")+ " .container-fluid .row-fluid:eq(1)"
+      $("#hiddenLoader").load(form_params, () ->
+        loaderHtml = $("#hiddenLoader").find("#travel_list").html()
+        $("#loader").html(loaderHtml)
         geoJson = parent.parseContent()
         myLayer.setGeoJSON(geoJson)
         if $("#travel_list li").length == 0
           $("#travel_list").append("<p>Pas de résultat</p>")
+
+        $(".exclude").html($("#hiddenLoader").find(".exclude").html())                      unless $(".exclude").hasClass("modified")
+        $("form.companies").html($("#hiddenLoader").find("form.companies").html())          unless $("form.companies").hasClass("modified")
+        $("form.stopover_form").html($("#hiddenLoader").find("form.stopover_form").html())  unless $("form.stopover_form").hasClass("modified")
+        $("#hiddenLoader").remove()
       )
-      form_params = "/?"+$(".modified").serialize().replace(/\utf8=%E2%9C%93&/g,"")
-      $(".exclude").load(form_params+" .exclude") unless $(".exclude").hasClass("modified")
-      $("form.companies").load(form_params+" form.companies") unless $("form.companies").hasClass("modified")
-      $("form.stopover_form").load(form_params+" form.stopover_form") unless $("form.stopover_form").hasClass("modified")
 
     clickButton= (city) ->
       myLayer.eachLayer (marker) ->

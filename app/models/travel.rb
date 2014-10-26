@@ -81,8 +81,7 @@ class Travel
     where(:places_available => {'$gte' => number_of_people.to_i})
   }
 
-  scope :from, lambda { |iata_code|
-    #any_of({ :start_city_code => iata_code })
+  scope :from_airport, lambda { |iata_code|
     airport = Airport.where(iata_code: iata_code).first
     if(airport['name'] == 'All Airports')
       where(start_city: airport['city'])
@@ -90,6 +89,11 @@ class Travel
       where(start_airport_code: iata_code)
     end
   }
+
+  scope :from, lambda { |city|
+    where(start_city: city)
+  }
+
 
   scope :prefered, lambda { |test|
     where(:prefered => true)

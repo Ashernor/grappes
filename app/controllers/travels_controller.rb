@@ -4,12 +4,30 @@ class TravelsController < ApplicationController
   # GET /travels
   def index
     store_search_params_in_cache(params)
-    retrieve_search_params_from_cookies
+    #retrieve_search_params_from_cookies
 
     #TODO : do a method for min and max
-    @max_price = Travel.pluck(:price).max || 500
-    @min_duration = Travel.pluck(:duration).min || 0
-    @max_duration = Travel.pluck(:duration).max || 12
+    @max_price = params[:max_price] || 600 #Travel.pluck(:price).max || 500
+    @min_duration = 0  # Travel.pluck(:duration).min || 0
+    @max_duration = 24 # Travel.pluck(:duration).max || 12
+
+    @minmax_hour = [0,24] #Travel.pluck(:departure).map{ |e| e.hour}.minmax
+    @front_travels = Travel.prefered("ok").empty? ? Travel.all : Travel.prefered("ok")
+    @moods = Mood.all.uniq
+
+    @cms = Cms.where(:language == "fr").last
+
+    @citys = []
+    @citys = Airport.collection.aggregate([
+      {'$match'  => {'first_class' => true, 'iata_code' =>  {'$ne' => ''}}},
+      {'$project'=> {'_id' => 0,'value' => '$city', 'label' => {'$concat' => ['$city',' - ','$name']}}}
+    ])
+    #Qpx::Api.logger.debug "========= Cities = #{@citys.inspect}"
+    # Nothing to do until user selected params.
+    unless params[:from].present? and params[:min_date].present? and params[:max_date].present?
+      Rails.logger.warn "No search to do. Insufficient params: #{params}"
+      return
+    end
 
     @travels = params.size == 2 ? nil : Travel.in_budget(0, @max_price)
     puts "=== Params: #{params}"
@@ -21,48 +39,24 @@ class TravelsController < ApplicationController
     #TODO: do a method for search
     ########## QPX: call api and refilter, unless there is travels filtered. ###########
     #TODO: call API even when Travels are outdated (use the search_date field).
-    if (@travels.nil? or @travels.empty?) and not (params['from'].nil? or params['from'].lstrip == '')
-      start_date  = params[:min_date].to_date if params['min_date'].present?
-      end_date    = params[:max_date].to_date if params['max_date'].present?
+    if @travels.blank? and params[:from].present?
+      start_date  = params[:min_date].to_time if params['min_date'].present?
+      end_date    = params[:max_date].to_time if params['max_date'].present?
       nb_people   = (params[:nb_people].present?)?params[:nb_people].to_i : 1
-      max_budget  = (params[:max_budget].present?)?params[:max_budget].to_f : @max_price
-      Qpx::Api.multi_search_trips(params['from'],start_date,nil,nb_people,max_budget)
+      Qpx::Api.multi_search_trips_by_city(params[:from],start_date,end_date,nb_people,@max_price)
       @travels = Travel.in_budget(0, @max_price)
       filter_travel_general_info(params)
-      puts "=== After Api Call travels count"+ @travels.count.to_s
+      puts "=== After Api Call travels count: "+ @travels.count.to_s
       #TODO: do a method for search
       filter_travel_details(params)
-      puts "=== After details filters travels count"+ @travels.count.to_s
-    #TODO: do a method for search
+      puts "=== After details filters travels count: "+ @travels.count.to_s
+      #TODO: do a method for search
     end
     ########## END QPX ###########
 
-
-    #@citys = Travel.all.map(&:start_city).uniq
-    @citys = []
-    @citys = Airport.collection.aggregate([
-      {'$match'  => {'first_class' => true, 'iata_code' =>  {'$ne' => ''}}},
-      {'$project'=> {'_id' => 0,'value' => '$iata_code', 'label' => {'$concat' => ['$city',' - ','$name']}}}
-    ])
-    #Qpx::Api.logger.debug "========= Cities = #{@citys.inspect}"
-=begin
-    @citys = Travel.all.map {|t|
-      hash = {}
-      hash["value"] = t.start_city
-      hash["label"] = "#{t.start_city} - #{t.start_airport_code}"
-
-      hash
-    }.uniq
-=end
-    @front_travels = Travel.prefered("ok").empty? ? Travel.all : Travel.prefered("ok")
+    @stopover = @travels.pluck(:stopover).uniq.sort_by!{ |e| e } if @travels
     @companies = @travels.pluck(:company).uniq if @travels
     @end_countries = @travels.pluck(:end_country).uniq.sort_by!{ |e| e.downcase }.delete_if(&:empty?) if @travels
-    @stopover = @travels.pluck(:stopover).uniq.sort_by!{ |e| e } if @travels
-
-    @minmax_hour = Travel.pluck(:departure).map{ |e| e.hour}.minmax
-    @moods = Mood.all.uniq
-
-    @cms = Cms.where(:language == "fr").last
 
   end
 
@@ -134,35 +128,35 @@ class TravelsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_travel
-      @travel = Travel.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_travel
+    @travel = Travel.find(params[:id])
+  end
 
-    # Only allow a trusted parameter "white list" through.
-    def travel_params
-      params.require(:travel).permit(:start_city, :end_city, :price, :places_available, :about, :departure_time, :arrival_time, :direct_trip, :company, :lowcost, :type, :start_airport, :end_airport)
-    end
+  # Only allow a trusted parameter "white list" through.
+  def travel_params
+    params.require(:travel).permit(:start_city, :end_city, :price, :places_available, :about, :departure_time, :arrival_time, :direct_trip, :company, :lowcost, :type, :start_airport, :end_airport)
+  end
 
-    def store_search_params_in_cache(params)
-      cookies[:from] = { :value => params[:from], :expires => Time.now + 2592000} if params[:from].present?
+  def store_search_params_in_cache(params)
+    cookies[:from] = { :value => params[:from], :expires => Time.now + 2592000} if params[:from].present?
 
-      cookies[:min_budget] = { :value => params[:min_budget], :expires => Time.now + 2592000} if params[:min_budget].present?
-      cookies[:max_budget] = { :value => params[:max_budget], :expires => Time.now + 2592000} if params[:max_budget].present?
+    cookies[:min_budget] = { :value => params[:min_budget], :expires => Time.now + 2592000} if params[:min_budget].present?
+    cookies[:max_budget] = { :value => params[:max_budget], :expires => Time.now + 2592000} if params[:max_budget].present?
 
-      cookies[:min_date] = { :value => params[:min_date], :expires => Time.now + 2592000} if params[:min_date].present?
-      cookies[:max_date] = { :value => params[:max_date], :expires => Time.now + 2592000} if params[:max_date].present?
-    end
+    cookies[:min_date] = { :value => params[:min_date], :expires => Time.now + 2592000} if params[:min_date].present?
+    cookies[:max_date] = { :value => params[:max_date], :expires => Time.now + 2592000} if params[:max_date].present?
+  end
 
-    def retrieve_search_params_from_cookies
-      if !cookies[:min_date].blank?
-        if cookies[:min_date].to_date >= Date.today
-            params[:from] = cookies[:from] if cookies[:from]
-            params[:min_budget] = cookies[:min_budget] unless cookies[:min_budget].blank?
-            params[:max_budget] = cookies[:max_budget] unless cookies[:max_budget].blank?
-            params[:min_date] = cookies[:min_date] unless cookies[:min_date].blank?
-            params[:max_date] = cookies[:max_date] unless cookies[:max_date].blank?
-        end
+  def retrieve_search_params_from_cookies
+    if !cookies[:min_date].blank?
+      if cookies[:min_date].to_date >= Date.today
+        params[:from] = cookies[:from] if cookies[:from]
+        params[:min_budget] = cookies[:min_budget] unless cookies[:min_budget].blank?
+        params[:max_budget] = cookies[:max_budget] unless cookies[:max_budget].blank?
+        params[:min_date] = cookies[:min_date] unless cookies[:min_date].blank?
+        params[:max_date] = cookies[:max_date] unless cookies[:max_date].blank?
       end
     end
+  end
 end
