@@ -76,7 +76,7 @@
 <div id="sidebar_right">
   <div class="shadow_right"></div>
   <div id="loader">
-      <ul id="travel_list" data-cities="<%= @citys.compact.to_json %>">
+      <ul id="travel_list">
         <% @travels.try(:each_with_index) do |travel, i| %>
           <% unless travel.coordinates.blank? %>
           <li data-color="color<%= i %>" data-coordinates="<%= travel.coordinates %>" data-company="<%= travel.company %>" data-content="<%= travel.about %>" data-starttime="<%= travel.start_time %>" data-endtime="<%= travel.end_time %>" data-imageurl="<%= travel.image(:medium) %>">
