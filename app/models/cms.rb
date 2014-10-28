@@ -22,4 +22,10 @@ class Cms
   field :budget, type: String, default: "Budget"
   field :friends, type: String, default: "Amis"
   field :footer, type: String, default: ""
+  field :tagline, type: String, default: "Le voyage sans pépin"
+  field :actu, type: String, default: "L'actu du raisin"
+  field :quisommesnous, type: String, default: "Qui sommes-nous ?"
+  field :budget_personne, type: String, default: "Budget par personne"
+  field :no_result, type: String, default: "Pas de résultat"
+  field :share, type: String, default: "Partager"
 end

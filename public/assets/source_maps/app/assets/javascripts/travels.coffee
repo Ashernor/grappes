@@ -56,7 +56,7 @@ window.travelsJs =
     else
       min_budget = min_b
     if ((min_b == "") || (max_b == ""))
-      max_budget = 600
+      max_budget = 1000
     else
       max_budget = max_b
     max = 0
@@ -195,7 +195,6 @@ window.travelsJs =
       feature = marker.feature
       posX = event.pageX
       poxY = event.pageY
-      console.log(feature.properties)
       hover = "<div class='hover_popup' style='left: "+posX+"px; top: "+poxY+"px' data-city='"+feature.properties.end_city+"'>
       <h4>#{feature.properties.end_city}</h4>
       <p class='start'>#{feature.properties.start_date}<br/>09h00 - 14h00</p>
@@ -328,7 +327,7 @@ window.travelsJs =
       $("body").append("<div id='hiddenLoader' class='hidden'/>")
       form_params = "/?"+$(".modified").serialize().replace(/\utf8=%E2%9C%93&/g,"")+ " .container-fluid .row-fluid:eq(1)"
       $("#hiddenLoader").load(form_params, () ->
-        loaderHtml = $("#hiddenLoader").find("#travel_list").html()
+        loaderHtml = $("#hiddenLoader").find("#travel_list").parent().html()
         $("#loader").html(loaderHtml)
         geoJson = parent.parseContent()
         myLayer.setGeoJSON(geoJson)
@@ -338,7 +337,7 @@ window.travelsJs =
         $(".exclude").html($("#hiddenLoader").find(".exclude").html())                      unless $(".exclude").hasClass("modified")
         $("form.companies").html($("#hiddenLoader").find("form.companies").html())          unless $("form.companies").hasClass("modified")
         $("form.stopover_form").html($("#hiddenLoader").find("form.stopover_form").html())  unless $("form.stopover_form").hasClass("modified")
-        $("#hiddenLoader").remove()
+        #$("#hiddenLoader").remove()
       )
 
     clickButton= (city) ->

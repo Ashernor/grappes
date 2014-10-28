@@ -15,13 +15,16 @@ class TravelsController < ApplicationController
     @front_travels = Travel.prefered("ok").empty? ? Travel.all : Travel.prefered("ok")
     @moods = Mood.all.uniq
 
-    @cms = Cms.where(:language == "fr").last
+    @cms = Cms.where(:language == "fr").first
 
     @citys = []
-    @citys = Airport.collection.aggregate([
-      {'$match'  => {'first_class' => true, 'iata_code' =>  {'$ne' => ''}}},
-      {'$project'=> {'_id' => 0,'value' => '$city', 'label' => {'$concat' => ['$city',' - ','$name']}}}
-    ])
+    @citys = Airport.all.map {|t|
+      hash = {}
+      hash["value"] = t.city
+      hash["label"] = "#{t.city} - #{t.iata_code}"
+
+      hash
+    }.uniq
     #Qpx::Api.logger.debug "========= Cities = #{@citys.inspect}"
     # Nothing to do until user selected params.
     unless params[:from].present? and params[:min_date].present? and params[:max_date].present?
@@ -76,7 +79,7 @@ class TravelsController < ApplicationController
     @travels = @travels.within_start_time(params[:min_start_time], params[:max_start_time]) if params[:min_start_time].present?
     @travels = @travels.within_end_time(params[:min_end_time], params[:max_end_time]) if params[:min_end_time].present?
     @travels = @travels.order_by(:price => :asc).limit(50) if @travels
-    @travels = @travels.not_in_countries(params[:countries]) if params[:countries]
+    @travels = @travels.not_in_countries(params[:countries]) if params[:countries].present?
     @travels = @travels.not_in_companies(params[:companies]) if params[:companies].present?
     @travels = @travels.with_mood(params[:mood]) if params[:mood].present?
     # we want to show the cheapest flights first

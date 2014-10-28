@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= content_for?(:title) ? yield(:title) : "Grapy - Le voyage sans pépins" %></title>
+  <title><%= content_for?(:title) ? yield(:title) : "Grapy -  #{@cms.tagline}" %></title>
   <link href='http://fonts.googleapis.com/css?family=Exo+2:400,300,700,500,200' rel='stylesheet' type='text/css'>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
@@ -31,8 +31,8 @@
     <h1><a href="/"><%= image_tag("grapy_logo.png") %></a></h1>
 
     <ul class="primary_navigation">
-      <li><a target="_blank" href="http://grapy.co/blog">L'actu du raisin</a></li>
-      <li><a target="_blank" href="http://www.grapy.co/blog/a-propos/">Qui sommes-nous ?</a></li>
+      <li><a target="_blank" href="http://grapy.co/blog"><%= @cms.actu %></a></li>
+      <li><a target="_blank" href="http://www.grapy.co/blog/a-propos/"><%= @cms.quisommesnous %></a></li>
       <li><a target="_blank" href="http://facebook.com/grapyfr"><%= image_tag("picto_facebook.png") %></a></li>
       <li><a target="_blank" href="http://twitter.com/grapy_fr"><%= image_tag("picto_twitter.png") %></a></li>
       <li><a target="_blank" href="http://instagram.com/grapy_fr/"><%= image_tag("picto_instagram.png") %></a></li>
@@ -87,7 +87,7 @@
   </div>
 
   <footer>
-    <div><%= @cms.footer %></div>
+    <div><%= @cms.footer.html_safe %></div>
   </footer>
 
 </div> <!-- /container -->
