@@ -85,7 +85,7 @@ Grappes::Application.configure do
   end
 
   RestClient.proxy = ENV['QUOTAGUARDSTATIC_URL'] if ENV['QUOTAGUARDSTATIC_URL'].present?
-  Qpx::Api.logger.info "Using proxy for static IP #{ENV['QUOTAGUARDSTATIC_URL']}"
+  Rails.logger.info "Using proxy for static IP #{ENV['QUOTAGUARDSTATIC_URL']}"
   uri = URI.parse(ENV['MONGOHQ_URL'])
   Qpx::Api.configure({mongo_url:      "#{uri.host}:#{uri.port}",
                       mongo_username: uri.user,
