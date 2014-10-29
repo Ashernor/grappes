@@ -56,7 +56,7 @@ window.travelsJs =
     else
       min_budget = min_b
     if ((min_b == "") || (max_b == ""))
-      max_budget = 1000
+      max_budget = 600
     else
       max_budget = max_b
     max = 0
@@ -193,8 +193,8 @@ window.travelsJs =
     myLayer.on 'mouseover', (e) ->
       marker = e.layer
       feature = marker.feature
-      posX = event.pageX
-      poxY = event.pageY
+      posX = e.pageX
+      poxY = e.pageY
       hover = "<div class='hover_popup' style='left: "+posX+"px; top: "+poxY+"px' data-city='"+feature.properties.end_city+"'>
       <h4>#{feature.properties.end_city}</h4>
       <p class='start'>#{feature.properties.start_date}<br/>09h00 - 14h00</p>
@@ -237,6 +237,7 @@ window.travelsJs =
       $("img.leaflet-marker-icon").attr("src","/picto_pin.png").css("width","auto").css("margin-left","-15px").css("margin-top","-37px")
 
     # autocomplete with ajax submission
+    coordinates   = $("#travel_list").data("coordinates")
     availableTags = $("#travel_list").data("cities")
     $(".autocomplete").autocomplete {
       source: availableTags,
@@ -245,9 +246,7 @@ window.travelsJs =
           ui.item = ui.content[0].value
           $(this).val(ui.item)
           $(this).autocomplete('close');
-        get_json("https://maps.googleapis.com/maps/api/geocode/json?address=#{ui.content[0].value}").done (e) ->
-          json = e.results[0].geometry.location
-          createMarker(json)
+          createCityMarker(ui.content[0].value)
           loadParams()
     }
 
@@ -271,9 +270,7 @@ window.travelsJs =
       $(this).parent().addClass("modified") if $(this).parent().attr("method") == "get"
       $(this).parent().parent().addClass("modified") if $(this).parent().parent().attr("method") == "get"
       if $(this).hasClass("autocomplete") && $(this).val().length > 3
-        get_json("https://maps.googleapis.com/maps/api/geocode/json?address=#{$(this).val()}").done (e) ->
-          json = e.results[0].geometry.location
-          createMarker(json)
+        createCityMarker($(this).val())
       if $("#from").val().length > 2 && $("#min_date").val().length > 2 && $("#max_date").val().length > 2
         loadParams()
 
@@ -339,6 +336,14 @@ window.travelsJs =
         $("form.stopover_form").html($("#hiddenLoader").find("form.stopover_form").html())  unless $("form.stopover_form").hasClass("modified")
         #$("#hiddenLoader").remove()
       )
+
+    createCityMarker = (city) ->
+      if coordinates[city]
+        createMarker(coordinates[city])
+      else
+        get_json("https://maps.googleapis.com/maps/api/geocode/json?address=#{city}").done (e) ->
+          json = e.results[0].geometry.location
+          createMarker(json)
 
     clickButton= (city) ->
       myLayer.eachLayer (marker) ->

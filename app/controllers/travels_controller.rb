@@ -18,10 +18,12 @@ class TravelsController < ApplicationController
     @cms = Cms.where(:language == "fr").first
 
     @citys = []
-    @citys = Airport.all.map {|t|
+    @coordinates = {}
+    @citys = Airport.where(first_class: true).map {|t|
+      @coordinates[t.city] = {lat:t.latitude,lng:t.longitude}
       hash = {}
-      hash["value"] = t.city
-      hash["label"] = "#{t.city} - #{t.iata_code}"
+      hash["value"]       = t.city
+      hash["label"]       = "#{t.city} - #{t.iata_code}"
 
       hash
     }.uniq
