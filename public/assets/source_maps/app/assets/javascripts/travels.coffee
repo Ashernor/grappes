@@ -40,13 +40,16 @@ window.travelsJs =
       dayNamesMin: ['D','L','M','M','J','V','S'],
       minDate: 0
     $(".datepicker").datepicker(options);
-    $("#min_date").change ->
+    $("#from").change ->
+      $("#min_date").val('')
+      $("#max_date").val('')
+    ###$("#min_date").change ->
       val = $("#min_date").val().split('/')
       if $("#min_date").val() != ""
         date = new Date(val[1]+"/"+parseInt(val[0])+"/"+val[2])
         date.setDate(date.getDate()+1)
         $("#max_date").val($.datepicker.formatDate('dd/mm/yy', date))
-
+    ###
     # submit when modif finished
     # Price range
     min_b = $("#min_budget").val()
@@ -246,6 +249,8 @@ window.travelsJs =
           ui.item = ui.content[0].value
           $(this).val(ui.item)
           $(this).autocomplete('close');
+          $("#min_date").val('')
+          $("#max_date").val('')
           createCityMarker(ui.content[0].value)
           loadParams()
     }
