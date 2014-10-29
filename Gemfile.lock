@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git://github.com/yawo/qpx.git
-  revision: 9459f17595f988eb00906bf73fdfbecc880b5b2c
+  revision: c4d2cc73a1f1716e0674ee9449a9d45ed411c813
   specs:
     qpx (0.0.1)
       moped
