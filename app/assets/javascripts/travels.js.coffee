@@ -326,6 +326,7 @@ window.travelsJs =
       return time1
 
     loadParams= ->
+      $("#travel_loading_gif").show();
       $("body").append("<div id='hiddenLoader' class='hidden'/>")
       form_params = "/?"+$(".modified").serialize().replace(/\utf8=%E2%9C%93&/g,"")+ " .container-fluid .row-fluid:eq(1)"
       $("#hiddenLoader").load(form_params, () ->
@@ -339,7 +340,8 @@ window.travelsJs =
         $(".exclude").html($("#hiddenLoader").find(".exclude").html())                      unless $(".exclude").hasClass("modified")
         $("form.companies").html($("#hiddenLoader").find("form.companies").html())          unless $("form.companies").hasClass("modified")
         $("form.stopover_form").html($("#hiddenLoader").find("form.stopover_form").html())  unless $("form.stopover_form").hasClass("modified")
-        #$("#hiddenLoader").remove()
+        $("#hiddenLoader").remove() # remove to avoid creating it over and over (at start of this function).
+        $("#travel_loading_gif").hide();
       )
 
     createCityMarker = (city) ->
