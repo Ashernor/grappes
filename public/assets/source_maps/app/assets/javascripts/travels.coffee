@@ -329,6 +329,7 @@ window.travelsJs =
       $("#travel_loading_gif").show();
       $("body").append("<div id='hiddenLoader' class='hidden'/>")
       form_params = "/?"+$(".modified").serialize().replace(/\utf8=%E2%9C%93&/g,"")+ " .container-fluid .row-fluid:eq(1)"
+      console.log(form_params)
       $("#hiddenLoader").load(form_params, () ->
         loaderHtml = $("#hiddenLoader").find("#travel_list").parent().html()
         $("#loader").html(loaderHtml)
