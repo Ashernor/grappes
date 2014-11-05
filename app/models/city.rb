@@ -13,6 +13,8 @@ class City
 
   field :coordinates, :type => Array
 
+  has_many :moods
+
   # Image upload with Paperclip & Mongoid
   has_mongoid_attached_file :image,
     :styles => {
