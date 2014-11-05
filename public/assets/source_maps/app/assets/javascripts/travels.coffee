@@ -269,8 +269,11 @@ window.travelsJs =
         $(this).prop('checked', false);
       $(this).toggleClass('radioInactive')
 
+    allreadyloaded = false
 
     $(document).on 'change', 'form input', ->
+      allreadyloaded = false
+
       parent.changeFromBackground()
       $(this).parent().addClass("modified") if $(this).parent().attr("method") == "get"
       $(this).parent().parent().addClass("modified") if $(this).parent().parent().attr("method") == "get"
@@ -329,7 +332,6 @@ window.travelsJs =
       $("#travel_loading_gif").show();
       $("body").append("<div id='hiddenLoader' class='hidden'/>")
       form_params = "/?"+$(".modified").serialize().replace(/\utf8=%E2%9C%93&/g,"")+ " .container-fluid .row-fluid:eq(1)"
-      console.log(form_params)
       $("#hiddenLoader").load(form_params, () ->
         loaderHtml = $("#hiddenLoader").find("#travel_list").parent().html()
         $("#loader").html(loaderHtml)
@@ -343,6 +345,9 @@ window.travelsJs =
         $("form.stopover_form").html($("#hiddenLoader").find("form.stopover_form").html())  unless $("form.stopover_form").hasClass("modified")
         $("#hiddenLoader").remove() # remove to avoid creating it over and over (at start of this function).
         $("#travel_loading_gif").hide();
+        if $("#travel_list li").length == 0 && !allreadyloaded
+          allreadyloaded = true
+          loadParams()
       )
 
     createCityMarker = (city) ->
