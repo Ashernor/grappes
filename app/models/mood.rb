@@ -7,6 +7,7 @@ class Mood
 
   belongs_to :travel
   belongs_to :city
+  belongs_to :airport
 
   # Image upload with Paperclip & Mongoid
   has_mongoid_attached_file :icon,

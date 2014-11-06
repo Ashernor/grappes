@@ -19,6 +19,8 @@ class Airport
   field    :timezone            , type: String
   field    :first_class         , type: Boolean, default: false
 
+  has_many :moods
+
 
   geocoded_by :iata_code        # can also be an IP address
 
