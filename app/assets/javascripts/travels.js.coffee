@@ -258,6 +258,11 @@ window.travelsJs =
 
     $("#from").bind "propertychange keyup input paste", ->
       parent.changeFromBackground()
+      str = $(this).val()
+      str = str.toLowerCase().replace(/\b[a-z]/g, (e) ->
+        return e.toUpperCase()
+      )
+      $(this).val(str)
 
     $(document).find("input[type='radio']").addClass('radioInactive');
 
